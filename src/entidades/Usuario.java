@@ -1,16 +1,22 @@
 package entidades;
 
 public class Usuario {
+    private int dni;
     private String nombre;
     private String direccion;
     private int edad;
     private int telefono;
 
-    public Usuario(String nombre, String direccion, int edad, int telefono) {
+    public Usuario(int dni, String nombre, String direccion, int edad, int telefono) {
+        this.dni = dni;
         this.nombre = nombre;
         this.direccion = direccion;
         this.edad = edad;
         this.telefono = telefono;
+    }
+
+    public int getDni() {
+        return dni;
     }
 
     public int getEdad() {
@@ -43,5 +49,9 @@ public class Usuario {
 
     public void setTelefono(int telefono) {
         this.telefono = telefono;
+    }
+
+    public void setDni(int dni) {
+        this.dni = dni;
     }
 }
