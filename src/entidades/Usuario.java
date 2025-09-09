@@ -1,26 +1,24 @@
 package entidades;
 
+import tdas.ListaTDA;
+
 public class Usuario {
     private int dni;
     private String nombre;
     private String direccion;
-    private int edad;
     private int telefono;
+    private ListaTDA prestamos;
 
-    public Usuario(int dni, String nombre, String direccion, int edad, int telefono) {
+    public Usuario(int dni, String nombre, String direccion, int telefono, ListaTDA prestamos) {
         this.dni = dni;
         this.nombre = nombre;
         this.direccion = direccion;
-        this.edad = edad;
         this.telefono = telefono;
+        this.prestamos = prestamos;
     }
 
     public int getDni() {
         return dni;
-    }
-
-    public int getEdad() {
-        return edad;
     }
 
     public int getTelefono() {
@@ -39,10 +37,6 @@ public class Usuario {
         this.direccion = direccion;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -53,5 +47,13 @@ public class Usuario {
 
     public void setDni(int dni) {
         this.dni = dni;
+    }
+
+    public ListaTDA getPrestamos() {
+        return prestamos;
+    }
+
+    public void setPrestamos(ListaTDA prestamos) {
+        this.prestamos = prestamos;
     }
 }
