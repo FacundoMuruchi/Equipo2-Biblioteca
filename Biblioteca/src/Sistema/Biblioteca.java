@@ -74,7 +74,7 @@ public class Biblioteca {
             // Crear préstamo
             Prestamo p = new Prestamo(l, u, fecha);
 
-            // CORRECCIÓN: usar método de Usuario directamente
+            
             u.agregarPrestamo(p);
 
             System.out.println("✅ Préstamo realizado: " + l.getTitulo() + " a " + u.getNombre());
@@ -121,3 +121,4 @@ public class Biblioteca {
         }
     }
 }
+
