@@ -40,7 +40,7 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
         System.out.println("--- PRESTAMOS ---");
         int i;
         for (i = 0; i < indice; i++) {
-            System.out.println(arr[i]);
+            System.out.println("Libro: " + arr[i].getLibro().getTitulo() + ", Usuario: " + arr[i].getUsuario().getNombre() + ", Devolucion: " + arr[i].getFechaDevolucion());
         }
     }
 

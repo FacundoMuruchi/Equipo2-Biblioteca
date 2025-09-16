@@ -16,5 +16,6 @@ public class Main {
         Prestamo pres2 = sys.agregarPrestamo(aladin, fede, "10-12-25");
         Prestamo pres3 = sys.agregarPrestamo(principito, juan, "4-12-25");
         sys.listarPrestamos();
+        sys.listarLibros();
     }
 }

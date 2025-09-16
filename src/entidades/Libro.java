@@ -45,8 +45,17 @@ public class Libro {
         this.titulo = titulo;
     }
 
+    public void bajarCantCopias() {
+        this.copiasDisponibles--;
+    }
+
     @Override
     public String toString() {
-        return titulo;
+        return "Libro{" +
+                "titulo='" + titulo + '\'' +
+                ", autor='" + autor + '\'' +
+                ", isbn=" + isbn +
+                ", copiasDisponibles=" + copiasDisponibles +
+                '}';
     }
 }

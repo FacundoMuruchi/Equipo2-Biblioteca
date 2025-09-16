@@ -48,10 +48,15 @@ public class Sistema {
     public Prestamo agregarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
         Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
         prestamos.agregarF(prestamo);
+        libro.bajarCantCopias();
         return prestamo;
     }
 
     public void listarPrestamos() {
         prestamos.mostrar();
+    }
+
+    public void listarLibros() {
+        libros.mostrar();
     }
 }
