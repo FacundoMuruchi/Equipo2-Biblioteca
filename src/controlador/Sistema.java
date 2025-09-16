@@ -1,8 +1,11 @@
 package controlador;
 
+import entidades.Espera;
 import entidades.Libro;
 import entidades.Prestamo;
 import entidades.Usuario;
+import tdas.colas.ColaListaDeEsperaDinamica;
+import tdas.colas.ColaListaDeEsperaTDA;
 import tdas.conjuntos.ConjuntoLibrosLD;
 import tdas.conjuntos.ConjuntoLibrosTDA;
 import tdas.conjuntos.ConjuntoUsuariosEstatico;
@@ -17,6 +20,7 @@ public class Sistema {
     ConjuntoUsuariosTDA dnis;
     DiccionarioSimpleUsuariosTDA usuarios;
     ListaPrestamoTDA prestamos;
+    ColaListaDeEsperaTDA pendientes;
 
 
     public Sistema() {
@@ -31,6 +35,9 @@ public class Sistema {
 
         prestamos = new ListaPrestamoEstatica();
         prestamos.inicializarLista();
+
+        pendientes = new ColaListaDeEsperaDinamica();
+        pendientes.inicializarCola();
     }
 
     public Libro agregarLibro(String titulo, String autor, int isbn, int copiasDisponibles) {
@@ -46,12 +53,18 @@ public class Sistema {
     }
 
     public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
-        Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
-        prestamos.agregarF(prestamo);
-        ListaPrestamoTDA listaPersonal = prestamos.filtrarPorUsuario(usuario);
-        usuario.setPrestamos(listaPersonal);
-        libro.bajarCantCopias();
-        return prestamo;
+        if (libro.getCopiasDisponibles() > 0) {
+            Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
+            prestamos.agregarF(prestamo);
+            ListaPrestamoTDA listaPersonal = prestamos.filtrarPorUsuario(usuario);
+            usuario.setPrestamos(listaPersonal);
+            libro.bajarCantCopias();
+            return prestamo;
+        } else {
+            Espera espera = new Espera(usuario, libro);
+            pendientes.acolar(espera);
+            return null;
+        }
     }
 
     public void listarPrestamos() {
@@ -64,6 +77,10 @@ public class Sistema {
 
     public void listarUsuarios() {
         usuarios.mostrar();
+    }
+
+    public void listarPendientes() {
+        pendientes.mostrar();
     }
 
     public void realizarDevolucion(Usuario usuario, Prestamo prestamo) {

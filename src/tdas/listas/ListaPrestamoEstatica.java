@@ -63,9 +63,7 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
 
     @Override
     public String toString() {
-        return "ListaPrestamoEstatica{" +
-                "arr=" + Arrays.toString(arr) +
-                ", indice=" + indice +
+        return "{" + Arrays.toString(arr) +
                 '}';
     }
 }
