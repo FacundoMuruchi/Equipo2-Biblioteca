@@ -1,6 +1,6 @@
 package entidades;
 
-import tdas.ListaPrestamoTDA;
+import tdas.listas.ListaPrestamoTDA;
 
 public class Usuario {
     private int dni;

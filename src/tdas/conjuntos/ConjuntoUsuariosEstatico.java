@@ -1,5 +1,7 @@
 package tdas.conjuntos;
 
+// ALMACENAR DNI DE USUARIOS
+
 public class ConjuntoUsuariosEstatico implements ConjuntoUsuariosTDA {
     int[] a; // contenido del conjunto
     int cant; // cantidad de elementos
@@ -11,9 +13,9 @@ public class ConjuntoUsuariosEstatico implements ConjuntoUsuariosTDA {
     }
 
     @Override
-    public void agregar(int x) {
-        if (!this.pertenece(x)){
-            a[cant] = x;
+    public void agregar(int dni) {
+        if (!this.pertenece(dni)){
+            a[cant] = dni;
             cant++;
         }
     }
@@ -29,10 +31,10 @@ public class ConjuntoUsuariosEstatico implements ConjuntoUsuariosTDA {
     }
 
     @Override
-    public void sacar(int x) {
+    public void sacar(int dni) {
         int i = 0;
         // tapar agujero del vector en i
-        while (i < cant && a[i] != x){
+        while (i < cant && a[i] != dni){
             i++;
         }
         if (i < cant){ // elemento encontrado
@@ -42,9 +44,9 @@ public class ConjuntoUsuariosEstatico implements ConjuntoUsuariosTDA {
     }
 
     @Override
-    public boolean pertenece(int x) {
+    public boolean pertenece(int dni) {
         int i = 0;
-        while (i<cant && a[i] != x){
+        while (i<cant && a[i] != dni){
             i++;
         }
         return (i<cant);

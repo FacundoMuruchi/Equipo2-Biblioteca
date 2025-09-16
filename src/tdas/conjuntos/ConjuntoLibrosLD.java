@@ -2,6 +2,8 @@ package tdas.conjuntos;
 
 import entidades.Libro;
 
+// ALMACENAR LIBROS
+
 public class ConjuntoLibrosLD implements ConjuntoLibrosTDA {
     private class Nodo {
         Libro info;
@@ -16,10 +18,10 @@ public class ConjuntoLibrosLD implements ConjuntoLibrosTDA {
     }
 
     @Override
-    public void agregar(Libro x) {
-        if (!pertenece(x.getIsbn())) {
+    public void agregar(Libro libro) {
+        if (!pertenece(libro.getIsbn())) {
             Nodo nuevo = new Nodo();
-            nuevo.info = x;
+            nuevo.info = libro;
             nuevo.sig = c;
             c = nuevo;
         }
@@ -36,13 +38,13 @@ public class ConjuntoLibrosLD implements ConjuntoLibrosTDA {
     }
 
     @Override
-    public void sacar(int x) {
+    public void sacar(int isbn) {
         if (c != null) {
-            if (c.info.getIsbn() == x) { // es el primero
+            if (c.info.getIsbn() == isbn) { // es el primero
                 c = c.sig;
             } else { // es algun otro, lo buscamos
                 Nodo aux = c;
-                while (aux.sig != null && aux.sig.info.getIsbn() != x) {
+                while (aux.sig != null && aux.sig.info.getIsbn() != isbn) {
                     aux = aux.sig;
                 }
                 if (aux.sig != null) { // encontrado
@@ -53,9 +55,9 @@ public class ConjuntoLibrosLD implements ConjuntoLibrosTDA {
     }
 
     @Override
-    public boolean pertenece(int x) {
+    public boolean pertenece(int isbn) {
         Nodo aux = c;
-        while (aux != null && aux.info.getIsbn() != x) {
+        while (aux != null && aux.info.getIsbn() != isbn) {
             aux = aux.sig;
         }
         return (aux != null);
