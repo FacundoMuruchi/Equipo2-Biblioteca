@@ -1,8 +1,8 @@
-package tdas;
+package tdas.conjuntos;
 
 import entidades.Libro;
 
-public class ConjuntoLibroLD implements ConjuntoTDA {
+public class ConjuntoLibrosLD implements ConjuntoLibrosTDA {
     private class Nodo {
         Libro info;
         Nodo sig;

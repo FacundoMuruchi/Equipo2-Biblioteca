@@ -1,8 +1,8 @@
-package tdas;
+package tdas.conjuntos;
 
 import entidades.Libro;
 
-public interface ConjuntoTDA {
+public interface ConjuntoLibrosTDA {
     void inicializarConjunto(); // pre: no aplica
     void agregar(Libro x); // pre: conjunto inicializado
     Libro elegir(); // pre: conjunto inicializado y no vacio

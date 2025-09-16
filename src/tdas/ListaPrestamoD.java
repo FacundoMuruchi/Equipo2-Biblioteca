@@ -2,24 +2,14 @@ package tdas;
 
 import entidades.Prestamo;
 
-public class ListaPrestamoD implements ListaTDA{
+public class ListaPrestamoD implements ListaPrestamoTDA {
     @Override
     public void InicializarLista() {
 
     }
 
     @Override
-    public void AgregarI(Prestamo c) {
-
-    }
-
-    @Override
     public void AgregarF(Prestamo c) {
-
-    }
-
-    @Override
-    public void AgregarO(Prestamo c) {
 
     }
 

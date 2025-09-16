@@ -1,14 +1,14 @@
 package controlador;
 
 import entidades.Libro;
-import tdas.ConjuntoLibroLD;
-import tdas.ConjuntoTDA;
+import tdas.conjuntos.ConjuntoLibrosLD;
+import tdas.conjuntos.ConjuntoLibrosTDA;
 
 public class Sistema {
-    ConjuntoTDA libros;
+    ConjuntoLibrosTDA libros;
 
     public Sistema() {
-        libros = new ConjuntoLibroLD();
+        libros = new ConjuntoLibrosLD();
         libros.inicializarConjunto();
     }
 

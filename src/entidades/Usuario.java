@@ -1,15 +1,15 @@
 package entidades;
 
-import tdas.ListaTDA;
+import tdas.ListaPrestamoTDA;
 
 public class Usuario {
     private int dni;
     private String nombre;
     private String direccion;
     private int telefono;
-    private ListaTDA prestamos;
+    private ListaPrestamoTDA prestamos;
 
-    public Usuario(int dni, String nombre, String direccion, int telefono, ListaTDA prestamos) {
+    public Usuario(int dni, String nombre, String direccion, int telefono, ListaPrestamoTDA prestamos) {
         this.dni = dni;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -49,11 +49,11 @@ public class Usuario {
         this.dni = dni;
     }
 
-    public ListaTDA getPrestamos() {
+    public ListaPrestamoTDA getPrestamos() {
         return prestamos;
     }
 
-    public void setPrestamos(ListaTDA prestamos) {
+    public void setPrestamos(ListaPrestamoTDA prestamos) {
         this.prestamos = prestamos;
     }
 }
