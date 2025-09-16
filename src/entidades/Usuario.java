@@ -9,12 +9,11 @@ public class Usuario {
     private int telefono;
     private ListaPrestamoTDA prestamos;
 
-    public Usuario(int dni, String nombre, String direccion, int telefono, ListaPrestamoTDA prestamos) {
+    public Usuario(int dni, String nombre, String direccion, int telefono) {
         this.dni = dni;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
-        this.prestamos = prestamos;
     }
 
     public int getDni() {
