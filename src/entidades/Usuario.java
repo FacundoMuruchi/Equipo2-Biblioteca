@@ -55,4 +55,9 @@ public class Usuario {
     public void setPrestamos(ListaPrestamoTDA prestamos) {
         this.prestamos = prestamos;
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

@@ -37,10 +37,12 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
 
     @Override
     public void mostrar() {
+        System.out.println("--- PRESTAMOS ---");
         int i;
-        for (i = 0; i <= indice; i++) {
+        for (i = 0; i < indice; i++) {
             System.out.println(arr[i]);
         }
     }
+
 
 }

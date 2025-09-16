@@ -50,4 +50,8 @@ public class Sistema {
         prestamos.agregarF(prestamo);
         return prestamo;
     }
+
+    public void listarPrestamos() {
+        prestamos.mostrar();
+    }
 }
