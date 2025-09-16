@@ -65,4 +65,9 @@ public class Sistema {
     public void listarUsuarios() {
         usuarios.mostrar();
     }
+
+    public void devolverLibro(Usuario usuario, Prestamo prestamo) {
+        usuario.getPrestamos().eliminar(prestamo);
+        prestamos.eliminar(prestamo);
+    }
 }

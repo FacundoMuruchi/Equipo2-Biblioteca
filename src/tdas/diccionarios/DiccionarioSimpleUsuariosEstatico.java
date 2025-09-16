@@ -6,6 +6,8 @@ import tdas.conjuntos.ConjuntoUsuariosTDA;
 import tdas.listas.ListaPrestamoEstatica;
 import tdas.listas.ListaPrestamoTDA;
 
+import java.util.Arrays;
+
 public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuariosTDA {
     private class Elemento {
         int clave;
@@ -74,4 +76,5 @@ public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuar
                                 ", Prestamos: " + elementos[i].valor.getPrestamos());
         }
     }
+
 }
