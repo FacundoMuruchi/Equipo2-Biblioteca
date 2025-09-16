@@ -48,6 +48,8 @@ public class Sistema {
     public Prestamo agregarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
         Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
         prestamos.agregarF(prestamo);
+        ListaPrestamoTDA listaPersonal = prestamos.filtrarPorUsuario(usuario);
+        usuario.setPrestamos(listaPersonal);
         libro.bajarCantCopias();
         return prestamo;
     }
@@ -58,5 +60,9 @@ public class Sistema {
 
     public void listarLibros() {
         libros.mostrar();
+    }
+
+    public void listarUsuarios() {
+        usuarios.mostrar();
     }
 }

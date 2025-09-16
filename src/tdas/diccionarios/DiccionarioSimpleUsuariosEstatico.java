@@ -3,6 +3,8 @@ package tdas.diccionarios;
 import entidades.Usuario;
 import tdas.conjuntos.ConjuntoUsuariosEstatico;
 import tdas.conjuntos.ConjuntoUsuariosTDA;
+import tdas.listas.ListaPrestamoEstatica;
+import tdas.listas.ListaPrestamoTDA;
 
 public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuariosTDA {
     private class Elemento {
@@ -58,4 +60,18 @@ public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuar
 			c.agregar(elementos[i].clave);
 		return c;
 	}
+
+
+
+    public void mostrar() {
+        int i;
+        System.out.println("--- USUARIOS ---");
+        for (i = 0; i < cant; i++) {
+            System.out.println("Nombre: " + elementos[i].valor.getNombre() +
+                                ", Direccion: " + elementos[i].valor.getDireccion() +
+                                ", Telefono: " + elementos[i].valor.getTelefono() +
+                                ", DNI: " + elementos[i].valor.getDni() +
+                                ", Prestamos: " + elementos[i].valor.getPrestamos());
+        }
+    }
 }
