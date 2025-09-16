@@ -71,4 +71,13 @@ public class Sistema {
         prestamos.eliminar(prestamo);
         prestamo.getLibro().subirCantCopias();
     }
+
+    public void buscarLibro(int isbn) {
+        Libro libroEncontrado = libros.buscar(isbn);
+        if (libroEncontrado != null) {
+            System.out.println("Libro encontrado: " + libroEncontrado.getTitulo() + ", ISBN: " + libroEncontrado.getIsbn());
+        } else {
+            System.out.println("Libro no encontrado con ISBN: " + isbn);
+        }
+    }
 }

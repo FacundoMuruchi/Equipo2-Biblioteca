@@ -29,5 +29,10 @@ public class Main {
         sys.listarPrestamos();
         sys.listarLibros();
         sys.listarUsuarios();
+
+        sys.buscarLibro(11111);
+        sys.buscarLibro(17451);
+        sys.buscarLibro(123);
+        sys.buscarLibro(5234);
     }
 }
