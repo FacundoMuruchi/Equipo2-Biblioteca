@@ -53,21 +53,20 @@ public class Sistema {
     }
 
     public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
+        Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
         if (libro.getCopiasDisponibles() > 0) {
-            Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
             prestamos.agregarF(prestamo);
             ListaPrestamoTDA listaPersonal = prestamos.filtrarPorUsuario(usuario);
             usuario.setPrestamos(listaPersonal);
             libro.bajarCantCopias();
-            return prestamo;
         } else {
             Espera espera = new Espera(usuario, libro);
             pendientes.acolar(espera);
-            return null;
         }
+        return prestamo;
     }
 
-    public void listarPrestamos() {
+    public void listerDevolucionesPendientes() {
         prestamos.mostrar();
     }
 
@@ -80,13 +79,22 @@ public class Sistema {
     }
 
     public void listarPendientes() {
-        pendientes.mostrar();
+        ColaListaDeEsperaTDA aux = new ColaListaDeEsperaDinamica();
+        aux.inicializarCola();
+        aux = pendientes;
+        System.out.println("--- COLA DE ESPERA ---");
+        System.out.println("(Primero arriba, ultimo abajo)");
+        while (!aux.colaVacia()){
+            System.out.println("Nombre: " + aux.primero().getUsuario().getNombre() + ", Libro deseado: " + aux.primero().getLibro().getTitulo());
+            aux.desacolar();
+        }
     }
 
     public void realizarDevolucion(Usuario usuario, Prestamo prestamo) {
         usuario.getPrestamos().eliminar(prestamo);
         prestamos.eliminar(prestamo);
         prestamo.getLibro().subirCantCopias();
+        pendientes.desacolar();
     }
 
     public void buscarLibro(int isbn) {

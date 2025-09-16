@@ -14,30 +14,19 @@ public class Main {
 
         Usuario facu = sys.registrarUsuario(47307150, "facu", "bera", 1125037150);
         Usuario juan = sys.registrarUsuario(52307157, "juan", "quilmes", 1199037540);
-        Usuario fede = sys.registrarUsuario(49872632, "fede", "ranelag", 1169373462);
+        Usuario fede = sys.registrarUsuario(49872632, "fede", "ranelagh", 1169373462);
 
-        Prestamo pres1 = sys.solicitarPrestamo(principito, facu, "12-12-25");
-        Prestamo pres4 = sys.solicitarPrestamo(aladin, facu, "30-12-25");
-        Prestamo pres3 = sys.solicitarPrestamo(principito, juan, "4-12-25");
-        Prestamo pres2 = sys.solicitarPrestamo(aladin, fede, "10-12-25");
-        Prestamo pres5 = sys.solicitarPrestamo(pocoyo, fede, "10-12-25");
+        Prestamo pres5 = sys.solicitarPrestamo(pocoyo, juan, "10-12-25");
         Prestamo pres6 = sys.solicitarPrestamo(pocoyo, facu, "10-12-25");
+        Prestamo pres7 = sys.solicitarPrestamo(pocoyo, fede, "10-12-25");
 
-        sys.listarPrestamos();
-        sys.listarLibros();
-        sys.listarUsuarios();
+//        sys.listarLibros();
+//        sys.listarUsuarios();
+//
+//        sys.buscarLibro(11111);
+//        sys.buscarLibro(5234);
 
-        sys.realizarDevolucion(facu, pres1);
-
-        sys.listarPrestamos();
-        sys.listarLibros();
-        sys.listarUsuarios();
-
-        sys.buscarLibro(11111);
-        sys.buscarLibro(17451);
-        sys.buscarLibro(123);
-        sys.buscarLibro(5234);
-
+        sys.realizarDevolucion(juan,pres5);
         sys.listarPendientes();
     }
 }

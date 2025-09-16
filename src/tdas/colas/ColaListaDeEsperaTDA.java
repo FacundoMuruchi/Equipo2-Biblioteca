@@ -8,5 +8,4 @@ public interface ColaListaDeEsperaTDA {
     void desacolar(); // pre: cola inicializada y no vacia
     boolean colaVacia(); // pre: cola inicializada
     Espera primero(); // pre: pila inicializada y no vacia
-    public void mostrar();
 }

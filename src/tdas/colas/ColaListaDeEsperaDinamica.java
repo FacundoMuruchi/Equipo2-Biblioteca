@@ -49,14 +49,4 @@ public class ColaListaDeEsperaDinamica implements ColaListaDeEsperaTDA {
     public Espera primero() {
         return primero.info;
     }
-
-    @Override
-    public void mostrar() {
-        System.out.println("--- COLA DE ESPERA ---");
-        Nodo aux = primero;
-        while (aux != null) {
-            System.out.println("Usuario: " + aux.info.getUsuario().getNombre() + ", Libro deseado: " + aux.info.getLibro().getTitulo());
-            aux = aux.sig;
-        }
-    }
 }
