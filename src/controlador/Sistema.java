@@ -69,5 +69,6 @@ public class Sistema {
     public void devolverLibro(Usuario usuario, Prestamo prestamo) {
         usuario.getPrestamos().eliminar(prestamo);
         prestamos.eliminar(prestamo);
+        prestamo.getLibro().subirCantCopias();
     }
 }

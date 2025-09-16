@@ -49,6 +49,10 @@ public class Libro {
         this.copiasDisponibles--;
     }
 
+    public void subirCantCopias() {
+        this.copiasDisponibles++;
+    }
+
     @Override
     public String toString() {
         return "Libro{" +

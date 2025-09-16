@@ -26,6 +26,7 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
         int indx = buscar(prestamo);
         if (indx != -1) { // si la clave existe
             arr[indx] = arr[indice - 1]; // reemplaza con el ultimo elemento de la lista
+            arr[indice - 1] = null;
             indice--;
         }
     }

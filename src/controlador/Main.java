@@ -24,7 +24,7 @@ public class Main {
         sys.listarLibros();
         sys.listarUsuarios();
 
-//        sys.devolverLibro(facu, pres1);
+        sys.devolverLibro(facu, pres1);
 
         sys.listarPrestamos();
         sys.listarLibros();
