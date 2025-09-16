@@ -33,18 +33,21 @@ public class Sistema {
         prestamos.inicializarLista();
     }
 
-    public void agregarLibro(String titulo, String autor, int isbn, int copiasDisponibles) {
+    public Libro agregarLibro(String titulo, String autor, int isbn, int copiasDisponibles) {
         Libro libro = new Libro(titulo, autor, isbn, copiasDisponibles);
         libros.agregar(libro);
+        return libro;
     }
 
-    public void agregarUsuario(int dni, String nombre, String direccion, int telefono) {
+    public Usuario agregarUsuario(int dni, String nombre, String direccion, int telefono) {
         Usuario usuario = new Usuario(dni, nombre, direccion, telefono);
         usuarios.agregar(usuario.getDni(), usuario);
+        return usuario;
     }
 
-    public void agregarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
+    public Prestamo agregarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
         Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
         prestamos.agregarF(prestamo);
+        return prestamo;
     }
 }
