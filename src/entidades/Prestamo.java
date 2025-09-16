@@ -34,4 +34,13 @@ public class Prestamo {
     public void setFechaDevolucion(String fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
     }
+
+    @Override
+    public String toString() {
+        return "Prestamo{" +
+                "libro=" + libro +
+                ", usuario=" + usuario +
+                ", fechaDevolucion='" + fechaDevolucion + '\'' +
+                '}';
+    }
 }
