@@ -39,13 +39,13 @@ public class Sistema {
         return libro;
     }
 
-    public Usuario agregarUsuario(int dni, String nombre, String direccion, int telefono) {
+    public Usuario registrarUsuario(int dni, String nombre, String direccion, int telefono) {
         Usuario usuario = new Usuario(dni, nombre, direccion, telefono);
         usuarios.agregar(usuario.getDni(), usuario);
         return usuario;
     }
 
-    public Prestamo agregarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
+    public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
         Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
         prestamos.agregarF(prestamo);
         ListaPrestamoTDA listaPersonal = prestamos.filtrarPorUsuario(usuario);
@@ -66,7 +66,7 @@ public class Sistema {
         usuarios.mostrar();
     }
 
-    public void devolverLibro(Usuario usuario, Prestamo prestamo) {
+    public void realizarDevolucion(Usuario usuario, Prestamo prestamo) {
         usuario.getPrestamos().eliminar(prestamo);
         prestamos.eliminar(prestamo);
         prestamo.getLibro().subirCantCopias();
