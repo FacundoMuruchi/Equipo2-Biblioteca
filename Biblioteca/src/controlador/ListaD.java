@@ -19,7 +19,6 @@ public class ListaD implements ListaTDA {
         inicio = null;
     }
 
-    @Override
     public void AgregarI(Contacto c) {
         Nodo nuevo = new Nodo();
         nuevo.info = c;
@@ -112,19 +111,16 @@ public class ListaD implements ListaTDA {
         }
     }
 
-	@Override
 	public void AgregarI(Prestamo c) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void AgregarF(Prestamo c) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void AgregarO(Prestamo c) {
 		// TODO Auto-generated method stub
 		
@@ -138,6 +134,12 @@ public class ListaD implements ListaTDA {
 
 	@Override
 	public void Ordenar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void AgregarPrestamo(Prestamo c) {
 		// TODO Auto-generated method stub
 		
 	}

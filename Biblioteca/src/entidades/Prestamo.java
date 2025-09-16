@@ -1,6 +1,7 @@
 package entidades;
 
 import tdas.ColaPrioridadTDA;
+import impl.ColaPrioridad; // 👈 usamos la implementación, no la interfaz
 
 public class Prestamo {
     private Libro libro;
@@ -12,7 +13,9 @@ public class Prestamo {
         this.libro = libro;
         this.usuario = usuario;
         this.fechaDevolucion = fechaDevolucion;
-        this.listaEspera = new ColaPrioridadTDA();
+
+        // CORRECCIÓN: instanciar la implementación concreta
+        this.listaEspera = new ColaPrioridad();
         this.listaEspera.InicializarCola();
     }
 
@@ -33,7 +36,7 @@ public class Prestamo {
     }
 
     public void agregarAListaEspera(Usuario u, int prioridad) {
-        listaEspera.AcolarPrioridad(u.getDniInt(), prioridad);
+        listaEspera.AcolarPrioridad(u.getDni(), prioridad);
     }
 
     public ColaPrioridadTDA getListaEspera() {
