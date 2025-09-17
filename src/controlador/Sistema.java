@@ -93,7 +93,7 @@ public class Sistema {
         aux.inicializarCola();
         aux = pendientes;
         System.out.println("--- COLA DE ESPERA ---");
-        System.out.println("(Primero arriba, ultimo abajo)");
+        System.out.println("(Primero arriba)");
         while (!aux.colaVacia()){
             System.out.println("Nombre: " + aux.primero().getUsuario().getNombre() + ", Libro deseado: " + aux.primero().getLibro().getTitulo());
             aux.desacolar();
@@ -114,6 +114,10 @@ public class Sistema {
         prestamo.getLibro().subirCantCopias();
     }
 
+    /**
+     * buscar existencia de un libro en el conjunto de libros segun su ISBN
+     * @param isbn
+     */
     public void buscarLibro(int isbn) {
         Libro libroEncontrado = libros.buscar(isbn);
         if (libroEncontrado != null) {

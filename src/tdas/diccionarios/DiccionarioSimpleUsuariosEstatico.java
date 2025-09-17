@@ -69,11 +69,11 @@ public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuar
         int i;
         System.out.println("--- USUARIOS ---");
         for (i = 0; i < cant; i++) {
-            System.out.println("Nombre: " + elementos[i].valor.getNombre() +
-                                ", Direccion: " + elementos[i].valor.getDireccion() +
-                                ", Telefono: " + elementos[i].valor.getTelefono() +
-                                ", DNI: " + elementos[i].valor.getDni() +
-                                ", Prestamos: " + elementos[i].valor.getPrestamos());
+            System.out.println("DNI: " + elementos[i].clave +
+                    ", Nombre: " + elementos[i].valor.getNombre() +
+                    ", Direccion: " + elementos[i].valor.getDireccion() +
+                    ", Telefono: " + elementos[i].valor.getTelefono() +
+                    ", Prestamos: " + elementos[i].valor.getPrestamos());
         }
     }
 

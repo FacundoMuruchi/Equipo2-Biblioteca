@@ -22,11 +22,11 @@ public class Main {
 
         sys.listarLibros();
         sys.listarUsuarios();
-//
-//        sys.buscarLibro(11111);
-//        sys.buscarLibro(5234);
 
-        sys.realizarDevolucion(pres1);
+        sys.buscarLibro(11111);
+        sys.buscarLibro(5234);
+
+//        sys.realizarDevolucion(pres1);
         sys.listarDevolucionesPendientes();
         sys.mostrarListaDeEspera();
     }

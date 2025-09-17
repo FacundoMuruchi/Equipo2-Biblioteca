@@ -57,13 +57,12 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
         System.out.println("--- PRESTAMOS ACTIVOS ---");
         int i;
         for (i = 0; i < indice; i++) {
-            System.out.println("Libro: " + arr[i].getLibro().getTitulo() + ", Usuario: " + arr[i].getUsuario().getNombre() + ", Devolucion: " + arr[i].getFechaDevolucion());
+            System.out.println("Usuario: " + arr[i].getUsuario().getNombre() + ", Libro: " + arr[i].getLibro().getTitulo() +  ", Devolucion: " + arr[i].getFechaDevolucion());
         }
     }
 
     @Override
     public String toString() {
-        return "{" + Arrays.toString(arr) +
-                '}';
+        return Arrays.toString(arr);
     }
 }
