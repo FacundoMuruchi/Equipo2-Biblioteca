@@ -21,7 +21,9 @@ public class Sistema {
     ListaPrestamoTDA prestamos;
     ColaListaDeEsperaTDA pendientes;
 
-
+    /**
+     * constructor: inicializa estructuras
+     */
     public Sistema() {
         libros = new ConjuntoLibrosLD();
         libros.inicializarConjunto();
@@ -39,18 +41,28 @@ public class Sistema {
         pendientes.inicializarCola();
     }
 
+    /**
+     * registrar libro nuevo y añadirlo al conjunto de libros
+     */
     public Libro agregarLibro(String titulo, String autor, int isbn, int copiasDisponibles) {
         Libro libro = new Libro(titulo, autor, isbn, copiasDisponibles);
         libros.agregar(libro);
         return libro;
     }
 
+    /**
+     * registrar usuario nuevo y agregarlo al diccionario
+     */
     public Usuario registrarUsuario(int dni, String nombre, String direccion, int telefono) {
         Usuario usuario = new Usuario(dni, nombre, direccion, telefono);
         usuarios.agregar(usuario.getDni(), usuario);
         return usuario;
     }
 
+    /**
+     * generar solicitud de prestamo. si está disponible, se agrega a la lista de prestamos y a la lista personal del usuario correspondiente,
+     * sino se acola en la cola de prestamos pendientes
+     */
     public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
         Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
         if (libro.getCopiasDisponibles() > 0) {
@@ -59,7 +71,6 @@ public class Sistema {
             usuario.setPrestamos(listaPersonal);
             libro.bajarCantCopias();
         } else {
-//            Espera espera = new Espera(usuario, libro);
             pendientes.acolar(prestamo);
         }
         return prestamo;
@@ -89,11 +100,17 @@ public class Sistema {
         }
     }
 
+    /**
+     * elimina el prestamo de la lista personal y de la lista de prestamos,
+     * luego agrega a la lista de prestamos al primer prestamo de la cola de pendientes
+     */
     public void realizarDevolucion(Prestamo prestamo) {
         prestamo.getUsuario().getPrestamos().eliminar(prestamo);
         prestamos.eliminar(prestamo);
-        prestamos.agregarF(pendientes.primero());
-        pendientes.desacolar();
+        if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia
+            prestamos.agregarF(pendientes.primero());
+            pendientes.desacolar();
+        }
         prestamo.getLibro().subirCantCopias();
     }
 
