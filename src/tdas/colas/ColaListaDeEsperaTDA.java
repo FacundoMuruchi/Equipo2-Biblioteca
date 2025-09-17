@@ -1,11 +1,11 @@
 package tdas.colas;
 
-import entidades.Espera;
+import entidades.Prestamo;
 
 public interface ColaListaDeEsperaTDA {
     void inicializarCola(); // pre: no aplica
-    void acolar(Espera x); // pre: cola inicializada
+    void acolar(Prestamo x); // pre: cola inicializada
     void desacolar(); // pre: cola inicializada y no vacia
     boolean colaVacia(); // pre: cola inicializada
-    Espera primero(); // pre: pila inicializada y no vacia
+    Prestamo primero(); // pre: pila inicializada y no vacia
 }

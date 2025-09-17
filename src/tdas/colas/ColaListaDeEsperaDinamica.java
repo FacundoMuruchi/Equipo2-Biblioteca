@@ -1,11 +1,10 @@
 package tdas.colas;
 
-import entidades.Espera;
-import tdas.conjuntos.ConjuntoLibrosLD;
+import entidades.Prestamo;
 
 public class ColaListaDeEsperaDinamica implements ColaListaDeEsperaTDA {
     private class Nodo {
-        Espera info;
+        Prestamo info;
         Nodo sig;
     }
 
@@ -19,7 +18,7 @@ public class ColaListaDeEsperaDinamica implements ColaListaDeEsperaTDA {
     }
 
     @Override
-    public void acolar(Espera x) {
+    public void acolar(Prestamo x) {
         Nodo nuevo = new Nodo();
         nuevo.info = x;
         nuevo.sig = null;
@@ -46,7 +45,7 @@ public class ColaListaDeEsperaDinamica implements ColaListaDeEsperaTDA {
     }
 
     @Override
-    public Espera primero() {
+    public Prestamo primero() {
         return primero.info;
     }
 }

@@ -1,6 +1,5 @@
 package controlador;
 
-import entidades.Espera;
 import entidades.Libro;
 import entidades.Prestamo;
 import entidades.Usuario;
@@ -60,13 +59,13 @@ public class Sistema {
             usuario.setPrestamos(listaPersonal);
             libro.bajarCantCopias();
         } else {
-            Espera espera = new Espera(usuario, libro);
-            pendientes.acolar(espera);
+//            Espera espera = new Espera(usuario, libro);
+            pendientes.acolar(prestamo);
         }
         return prestamo;
     }
 
-    public void listerDevolucionesPendientes() {
+    public void listarDevolucionesPendientes() {
         prestamos.mostrar();
     }
 
@@ -78,7 +77,7 @@ public class Sistema {
         usuarios.mostrar();
     }
 
-    public void listarPendientes() {
+    public void mostrarListaDeEspera() {
         ColaListaDeEsperaTDA aux = new ColaListaDeEsperaDinamica();
         aux.inicializarCola();
         aux = pendientes;
@@ -90,11 +89,12 @@ public class Sistema {
         }
     }
 
-    public void realizarDevolucion(Usuario usuario, Prestamo prestamo) {
-        usuario.getPrestamos().eliminar(prestamo);
+    public void realizarDevolucion(Prestamo prestamo) {
+        prestamo.getUsuario().getPrestamos().eliminar(prestamo);
         prestamos.eliminar(prestamo);
-        prestamo.getLibro().subirCantCopias();
+        prestamos.agregarF(pendientes.primero());
         pendientes.desacolar();
+        prestamo.getLibro().subirCantCopias();
     }
 
     public void buscarLibro(int isbn) {
