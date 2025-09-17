@@ -1,7 +1,6 @@
 package tdas.listas;
 
 import entidades.Prestamo;
-import entidades.Usuario;
 
 public interface ListaPrestamoTDA {
     void inicializarLista();
@@ -9,5 +8,4 @@ public interface ListaPrestamoTDA {
     void eliminar(Prestamo prestamo);
     int buscar(Prestamo prestamo);
     void mostrar();
-    ListaPrestamoTDA filtrarPorUsuario(Usuario usuario);
 }

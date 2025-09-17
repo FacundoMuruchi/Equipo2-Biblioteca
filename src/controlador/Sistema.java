@@ -18,7 +18,7 @@ public class Sistema {
     ConjuntoLibrosTDA libros;
     ConjuntoUsuariosTDA dnis;
     DiccionarioSimpleUsuariosTDA usuarios;
-    ListaPrestamoTDA prestamos;
+    ListaPrestamoTDA prestamosActivos, prestamosTotales;
     ColaListaDeEsperaTDA pendientes;
 
     /**
@@ -34,8 +34,11 @@ public class Sistema {
         usuarios = new DiccionarioSimpleUsuariosEstatico();
         usuarios.inicializarDiccionario();
 
-        prestamos = new ListaPrestamoEstatica();
-        prestamos.inicializarLista();
+        prestamosActivos = new ListaPrestamoEstatica();
+        prestamosActivos.inicializarLista();
+
+        prestamosTotales = new ListaPrestamoEstatica();
+        prestamosTotales.inicializarLista();
 
         pendientes = new ColaListaDeEsperaDinamica();
         pendientes.inicializarCola();
@@ -55,7 +58,7 @@ public class Sistema {
      */
     public Usuario registrarUsuario(int dni, String nombre, String direccion, int telefono) {
         Usuario usuario = new Usuario(dni, nombre, direccion, telefono);
-        usuarios.agregar(usuario.getDni(), usuario);
+        usuarios.agregar(dni, usuario);
         return usuario;
     }
 
@@ -65,27 +68,32 @@ public class Sistema {
      */
     public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
         Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
-        if (libro.getCopiasDisponibles() > 0) {
-            prestamos.agregarF(prestamo);
-            ListaPrestamoTDA listaPersonal = prestamos.filtrarPorUsuario(usuario);
-            usuario.setPrestamos(listaPersonal);
-            libro.bajarCantCopias();
-        } else {
-            pendientes.acolar(prestamo);
-        }
+            if (libro.getCopiasDisponibles() > 0) {
+                prestamosActivos.agregarF(prestamo);
+                prestamosTotales.agregarF(prestamo);
+                libro.bajarCantCopias();
+            } else {
+                pendientes.acolar(prestamo);
+            }
         return prestamo;
     }
 
     public void listarDevolucionesPendientes() {
-        prestamos.mostrar();
+        System.out.println("--- DEVOLUCIONES PENDIENTES ---");
+        prestamosActivos.mostrar();
+        System.out.println();
     }
 
     public void listarLibros() {
+        System.out.println("--- LIBROS ---");
         libros.mostrar();
+        System.out.println();
     }
 
     public void listarUsuarios() {
+        System.out.println("--- USUARIOS ---");
         usuarios.mostrar();
+        System.out.println();
     }
 
     public void mostrarListaDeEspera() {
@@ -98,20 +106,27 @@ public class Sistema {
             System.out.println("Nombre: " + aux.primero().getUsuario().getNombre() + ", Libro deseado: " + aux.primero().getLibro().getTitulo());
             aux.desacolar();
         }
+        System.out.println();
     }
 
     /**
-     * elimina el prestamo de la lista personal y de la lista de prestamos,
+     * elimina el prestamo de la lista de prestamos activos,
      * luego agrega a la lista de prestamos al primer prestamo de la cola de pendientes
      */
     public void realizarDevolucion(Prestamo prestamo) {
-        prestamo.getUsuario().getPrestamos().eliminar(prestamo);
-        prestamos.eliminar(prestamo);
+        prestamosActivos.eliminar(prestamo);
         if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia
-            prestamos.agregarF(pendientes.primero());
+            prestamosActivos.agregarF(pendientes.primero());
             pendientes.desacolar();
         }
         prestamo.getLibro().subirCantCopias();
+        System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto: " + prestamo.getLibro().getTitulo() + "\n");
+    }
+
+    public void listarTodosPrestamos() {
+        System.out.println("--- TODOS LOS PRESTAMOS ---");
+        prestamosTotales.mostrar();
+        System.out.println();
     }
 
     /**
@@ -125,5 +140,6 @@ public class Sistema {
         } else {
             System.out.println("Libro no encontrado con ISBN: " + isbn);
         }
+        System.out.println();
     }
 }

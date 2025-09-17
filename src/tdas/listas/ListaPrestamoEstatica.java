@@ -1,7 +1,6 @@
 package tdas.listas;
 
 import entidades.Prestamo;
-import entidades.Usuario;
 
 import java.util.Arrays;
 
@@ -39,22 +38,8 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
         return i; // indice (-1 si no lo encuentra)
     }
 
-    public ListaPrestamoTDA filtrarPorUsuario(Usuario usuario) {
-        ListaPrestamoTDA listaPersonal = new ListaPrestamoEstatica();
-        listaPersonal.inicializarLista();
-
-        for (int i = 0; i < indice; i++) {
-            if (arr[i].getUsuario() == usuario) {
-                listaPersonal.agregarF(arr[i]);
-            }
-        }
-
-        return listaPersonal;
-    }
-
     @Override
     public void mostrar() {
-        System.out.println("--- PRESTAMOS ACTIVOS ---");
         int i;
         for (i = 0; i < indice; i++) {
             System.out.println("Usuario: " + arr[i].getUsuario().getNombre() + ", Libro: " + arr[i].getLibro().getTitulo() +  ", Devolucion: " + arr[i].getFechaDevolucion());

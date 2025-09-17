@@ -7,7 +7,6 @@ public class Usuario {
     private String nombre;
     private String direccion;
     private int telefono;
-    private ListaPrestamoTDA prestamos;
 
     public Usuario(int dni, String nombre, String direccion, int telefono) {
         this.dni = dni;
@@ -46,14 +45,6 @@ public class Usuario {
 
     public void setDni(int dni) {
         this.dni = dni;
-    }
-
-    public ListaPrestamoTDA getPrestamos() {
-        return prestamos;
-    }
-
-    public void setPrestamos(ListaPrestamoTDA prestamos) {
-        this.prestamos = prestamos;
     }
 
     @Override

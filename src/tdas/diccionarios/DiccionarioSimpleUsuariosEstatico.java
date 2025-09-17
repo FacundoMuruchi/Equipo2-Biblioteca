@@ -29,7 +29,6 @@ public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuar
 			elementos[pos].clave = clave;
 			cant++;
 		}
-		// elementos[pos].valor = valor;
 		Elemento elem;
 		elem= elementos[pos];
 		elem.valor= valor;
@@ -63,18 +62,13 @@ public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuar
 		return c;
 	}
 
-
-
     public void mostrar() {
         int i;
-        System.out.println("--- USUARIOS ---");
         for (i = 0; i < cant; i++) {
             System.out.println("DNI: " + elementos[i].clave +
                     ", Nombre: " + elementos[i].valor.getNombre() +
                     ", Direccion: " + elementos[i].valor.getDireccion() +
-                    ", Telefono: " + elementos[i].valor.getTelefono() +
-                    ", Prestamos: " + elementos[i].valor.getPrestamos());
+                    ", Telefono: " + elementos[i].valor.getTelefono());
         }
     }
-
 }
