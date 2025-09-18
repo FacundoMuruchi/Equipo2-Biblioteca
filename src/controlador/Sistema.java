@@ -14,6 +14,8 @@ import tdas.diccionarios.DiccionarioSimpleUsuariosTDA;
 import tdas.listas.ListaPrestamoEstatica;
 import tdas.listas.ListaPrestamoTDA;
 
+import java.util.Scanner;
+
 public class Sistema {
     ConjuntoLibrosTDA libros;
     ConjuntoUsuariosTDA dnis;
@@ -49,6 +51,9 @@ public class Sistema {
      */
     public Libro agregarLibro(String titulo, String autor, int isbn, int copiasDisponibles) {
         Libro libro = new Libro(titulo, autor, isbn, copiasDisponibles);
+        if (libros.pertenece(isbn)) {
+            System.out.println("Ya hay un libro registrado con ISBN: " + isbn + "\n");
+        }
         libros.agregar(libro);
         return libro;
     }
@@ -58,7 +63,11 @@ public class Sistema {
      */
     public Usuario registrarUsuario(int dni, String nombre, String direccion, int telefono) {
         Usuario usuario = new Usuario(dni, nombre, direccion, telefono);
-        usuarios.agregar(dni, usuario);
+        if (usuarios.claves().pertenece(dni)) {
+            System.out.println("Ya hay un usuario registrado con DNI: " + dni + "\n");
+        } else {
+            usuarios.agregar(dni, usuario);
+        }
         return usuario;
     }
 
@@ -120,7 +129,7 @@ public class Sistema {
             pendientes.desacolar();
         }
         prestamo.getLibro().subirCantCopias();
-        System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto: " + prestamo.getLibro().getTitulo() + "\n");
+        System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto el libro: " + prestamo.getLibro().getTitulo() + "\n");
     }
 
     public void listarTodosPrestamos() {
@@ -140,6 +149,5 @@ public class Sistema {
         } else {
             System.out.println("Libro no encontrado con ISBN: " + isbn);
         }
-        System.out.println();
     }
 }
