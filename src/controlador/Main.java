@@ -19,11 +19,12 @@ public class Main {
         Usuario fede = sys.registrarUsuario(49872632, "fede", "ranelagh", 1169373462);
         Usuario carlos = sys.registrarUsuario(49872632, "carlitos", "ranelagh", 634735475); // no se añade porque ya existe dni
 
-        Prestamo pres1 = sys.solicitarPrestamo(pocoyo, facu, "10-12-25");
+        Prestamo pres1 = sys.solicitarPrestamo(pocoyo, carlos, "10-12-25"); // no se realiza el prestamo porque carlos no esta registrado
         Prestamo pres2 = sys.solicitarPrestamo(pocoyo, juan, "10-12-25");
         Prestamo pres3 = sys.solicitarPrestamo(pocoyo, fede, "10-12-25");
+        Prestamo pres4 = sys.solicitarPrestamo(pocoyo, facu, "10-12-25");
 
-//        sys.realizarDevolucion(pres1);
+        sys.realizarDevolucion(pres1);
 
         sys.listarLibros();
         sys.listarUsuarios();

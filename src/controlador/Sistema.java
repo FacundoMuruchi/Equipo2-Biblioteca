@@ -77,6 +77,7 @@ public class Sistema {
      */
     public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
         Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
+        if (usuarios.recuperar(usuario.getDni()) == usuario) {
             if (libro.getCopiasDisponibles() > 0) {
                 prestamosActivos.agregarF(prestamo);
                 prestamosTotales.agregarF(prestamo);
@@ -84,6 +85,10 @@ public class Sistema {
             } else {
                 pendientes.acolar(prestamo);
             }
+        } else {
+            System.out.println("Usuario " + usuario.getNombre() + " no está registrado \n");
+            return null;
+        }
         return prestamo;
     }
 
@@ -123,13 +128,17 @@ public class Sistema {
      * luego agrega a la lista de prestamos al primer prestamo de la cola de pendientes
      */
     public void realizarDevolucion(Prestamo prestamo) {
-        prestamosActivos.eliminar(prestamo);
-        if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia
-            prestamosActivos.agregarF(pendientes.primero());
-            pendientes.desacolar();
+        if (prestamo != null) {
+            prestamosActivos.eliminar(prestamo);
+            if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia
+                prestamosActivos.agregarF(pendientes.primero());
+                pendientes.desacolar();
+            }
+            prestamo.getLibro().subirCantCopias();
+            System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto el libro: " + prestamo.getLibro().getTitulo() + "\n");
+        } else {
+            System.out.println("No existe ese prestamo para \n");
         }
-        prestamo.getLibro().subirCantCopias();
-        System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto el libro: " + prestamo.getLibro().getTitulo() + "\n");
     }
 
     public void listarTodosPrestamos() {
