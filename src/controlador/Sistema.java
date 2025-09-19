@@ -52,7 +52,7 @@ public class Sistema {
     public Libro agregarLibro(String titulo, String autor, int isbn, int copiasDisponibles) {
         Libro libro = new Libro(titulo, autor, isbn, copiasDisponibles);
         if (libros.pertenece(isbn)) {
-            System.out.println("Ya hay un libro registrado con ISBN: " + isbn + "\n");
+            System.out.println("No se puede añadir el libro '" + titulo + "' porque ya hay uno registrado con ISBN: " + isbn + "\n");
         }
         libros.agregar(libro);
         return libro;
@@ -64,7 +64,7 @@ public class Sistema {
     public Usuario registrarUsuario(int dni, String nombre, String direccion, int telefono) {
         Usuario usuario = new Usuario(dni, nombre, direccion, telefono);
         if (usuarios.claves().pertenece(dni)) {
-            System.out.println("Ya hay un usuario registrado con DNI: " + dni + "\n");
+            System.out.println("No se puede añadir al usuario '" + nombre + "' porque ya hay uno registrado con DNI: " + dni + "\n");
         } else {
             usuarios.agregar(dni, usuario);
         }
@@ -86,7 +86,7 @@ public class Sistema {
                 pendientes.acolar(prestamo);
             }
         } else {
-            System.out.println("Usuario " + usuario.getNombre() + " no está registrado \n");
+            System.out.println("No puede solicitarse el prestamo porque '" + usuario.getNombre() + "' no está registrado \n");
             return null;
         }
         return prestamo;
@@ -100,13 +100,36 @@ public class Sistema {
 
     public void listarLibros() {
         System.out.println("--- LIBROS ---");
-        libros.mostrar();
+        ConjuntoLibrosTDA aux = new ConjuntoLibrosLD();
+        aux = libros;
+        while (!aux.conjuntoVacio()) {
+            Libro libroAzar = aux.elegir(); // se elige un libro al azar
+            aux.sacar(libroAzar.getIsbn());
+            System.out.println("Titulo: " + libroAzar.getTitulo() + ", Autor: " + libroAzar.getAutor() + ", ISBN: " + libroAzar.getIsbn() + ", Copias: " + libroAzar.getCopiasDisponibles());
+        }
+//        libros.mostrar();
         System.out.println();
     }
 
     public void listarUsuarios() {
         System.out.println("--- USUARIOS ---");
-        usuarios.mostrar();
+        ConjuntoUsuariosTDA dnisAux = new ConjuntoUsuariosEstatico();
+
+        dnisAux = usuarios.claves();
+
+        while (!dnisAux.conjuntoVacio()) {
+
+            int dniAzar = dnisAux.elegir(); // elegir clave al azar
+            Usuario usuarioAzar = usuarios.recuperar(dniAzar); // elegir usuario de la respectiva clave
+
+            System.out.println("DNI: " + dniAzar +
+                    ", Nombre: " + usuarioAzar.getNombre() +
+                    ", Direccion: " + usuarioAzar.getDireccion() +
+                    ", Telefono: " + usuarioAzar.getTelefono());
+
+            dnisAux.sacar(dniAzar);
+        }
+//        usuarios.mostrar();
         System.out.println();
     }
 
@@ -137,7 +160,7 @@ public class Sistema {
             prestamo.getLibro().subirCantCopias();
             System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto el libro: " + prestamo.getLibro().getTitulo() + "\n");
         } else {
-            System.out.println("No existe ese prestamo para \n");
+            System.out.println("No existe ese prestamo\n");
         }
     }
 

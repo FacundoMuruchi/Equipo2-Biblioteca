@@ -28,10 +28,10 @@ public class Main {
 
         sys.listarLibros();
         sys.listarUsuarios();
-        sys.listarTodosPrestamos();
-        sys.listarDevolucionesPendientes();
-        sys.mostrarListaDeEspera();
-
+//        sys.listarTodosPrestamos();
+//        sys.listarDevolucionesPendientes();
+//        sys.mostrarListaDeEspera();
+//
         sys.buscarLibro(11111);
         sys.buscarLibro(5234);
     }

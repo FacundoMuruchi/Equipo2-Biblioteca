@@ -9,5 +9,4 @@ public interface DiccionarioSimpleUsuariosTDA {
     void eliminar(int clave); // pre: diccionario iniciaizado
     Usuario recuperar(int clave); // pre: diccionario inicializado y no vacio
     ConjuntoUsuariosTDA claves(); // pre: diccionario inicializado
-    void mostrar();
 }

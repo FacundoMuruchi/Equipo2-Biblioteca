@@ -10,5 +10,4 @@ public interface ConjuntoLibrosTDA {
     void sacar(int isbn); // pre: conjunto inicializado y no vacio
     boolean pertenece(int isbn); // pre: conjunto inicializado
     public Libro buscar(int isbn);
-    void mostrar();
 }

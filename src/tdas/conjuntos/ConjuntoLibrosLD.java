@@ -80,13 +80,4 @@ public class ConjuntoLibrosLD implements ConjuntoLibrosTDA {
         }
         return null;
     }
-
-    @Override
-    public void mostrar() {
-        Nodo aux = c;
-        while (aux != null) {
-            System.out.println("Titulo: " + aux.info.getTitulo() + ", Autor: " + aux.info.getAutor() + ", ISBN: " + aux.info.getIsbn() + ", Copias: " + aux.info.getCopiasDisponibles());
-            aux = aux.sig;
-        }
-    }
 }

@@ -61,14 +61,4 @@ public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuar
 			c.agregar(elementos[i].clave);
 		return c;
 	}
-
-    public void mostrar() {
-        int i;
-        for (i = 0; i < cant; i++) {
-            System.out.println("DNI: " + elementos[i].clave +
-                    ", Nombre: " + elementos[i].valor.getNombre() +
-                    ", Direccion: " + elementos[i].valor.getDireccion() +
-                    ", Telefono: " + elementos[i].valor.getTelefono());
-        }
-    }
 }
