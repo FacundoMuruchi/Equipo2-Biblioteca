@@ -7,7 +7,6 @@ import tdas.colas.ColaListaDeEsperaDinamica;
 import tdas.colas.ColaListaDeEsperaTDA;
 import tdas.conjuntos.ConjuntoLibrosLD;
 import tdas.conjuntos.ConjuntoLibrosTDA;
-import tdas.conjuntos.ConjuntoUsuariosEstatico;
 import tdas.conjuntos.ConjuntoUsuariosTDA;
 import tdas.diccionarios.DiccionarioSimpleUsuariosEstatico;
 import tdas.diccionarios.DiccionarioSimpleUsuariosTDA;
@@ -40,6 +39,7 @@ public class Sistema {
         pendientes.inicializarCola();
     }
 
+    // METODOS DE LA BIBLIOTECA
     /**
      * registrar libro nuevo y añadirlo al conjunto de libros
      */
@@ -86,60 +86,50 @@ public class Sistema {
         return prestamo;
     }
 
+    /**
+     * elimina el prestamo de la lista de prestamos activos,
+     * luego agrega a la lista de prestamos al primer prestamo de la cola de pendientes
+     */
+    public void realizarDevolucion(Prestamo prestamo) {
+        if (prestamo != null) { // si el prestamo existe
+            prestamosActivos.eliminar(prestamo);
+            if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia
+                prestamosActivos.agregarF(pendientes.primero());
+                prestamosTotales.agregarF(pendientes.primero());
+                pendientes.desacolar();
+            }
+            prestamo.getLibro().subirCantCopias();
+            System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto el libro: " + prestamo.getLibro().getTitulo() + "\n");
+        } else {
+            System.out.println("No puede realizarse la devolucion porque no existe ese prestamo\n");
+        }
+    }
+
+    /**
+     * buscar libro en base a su isbn
+     * @param isbn
+     */
+    public void buscarLibro(int isbn) {
+        if (libros.pertenece(isbn)) {
+            ConjuntoLibrosTDA aux = libros;
+            Libro libroAzar = aux.elegir(); // libro elegido al azar
+            while (libroAzar.getIsbn() != isbn) {
+                aux.sacar(libroAzar.getIsbn());
+                libroAzar = aux.elegir();
+            }
+            System.out.println("Libro encontrado: " + libroAzar.getTitulo() + ", ISBN: " + libroAzar.getIsbn());
+
+        } else {
+            System.out.println("Libro no encontrado con ISBN: " + isbn);
+        }
+    }
+
+    // LISTAR LIBROS, USUARIOS, COLA DE ESPERA Y PRESTAMOS
     public void listarDevolucionesPendientes() {
         System.out.println("--- DEVOLUCIONES PENDIENTES ---");
         prestamosActivos.mostrar();
         System.out.println();
     }
-
-    private ConjuntoLibrosTDA copiarConjuntoLibros() {
-        ConjuntoLibrosTDA aux = new ConjuntoLibrosLD();
-        aux.inicializarConjunto();
-
-        ConjuntoLibrosTDA copia = new ConjuntoLibrosLD();
-        copia.inicializarConjunto();
-
-        Libro azar;
-
-        while (!libros.conjuntoVacio()) {
-            azar = libros.elegir();
-            aux.agregar(azar);
-            libros.sacar(azar.getIsbn());
-        }
-
-        while (!aux.conjuntoVacio()) {
-            azar = aux.elegir();
-            libros.agregar(azar);
-            copia.agregar(azar);
-            aux.sacar(azar.getIsbn());
-        }
-        return copia;
-    }
-
-    private ColaListaDeEsperaTDA copiarCola() {
-        ColaListaDeEsperaTDA aux = new ColaListaDeEsperaDinamica();
-        aux.inicializarCola();
-
-        ColaListaDeEsperaTDA copia = new ColaListaDeEsperaDinamica();
-        copia.inicializarCola();
-
-        Prestamo primero;
-
-        while (!pendientes.colaVacia()) {
-            primero = pendientes.primero();
-            pendientes.desacolar();
-            aux.acolar(primero);
-        }
-
-        while (!aux.colaVacia()) {
-            primero = aux.primero();
-            aux.desacolar();
-            pendientes.acolar(primero);
-            copia.acolar(primero);
-        }
-        return copia;
-    }
-
 
     public void listarLibros() {
         System.out.println("--- LIBROS ---");
@@ -187,43 +177,58 @@ public class Sistema {
         System.out.println();
     }
 
-    /**
-     * elimina el prestamo de la lista de prestamos activos,
-     * luego agrega a la lista de prestamos al primer prestamo de la cola de pendientes
-     */
-    public void realizarDevolucion(Prestamo prestamo) {
-        if (prestamo != null) { // si el prestamo existe
-            prestamosActivos.eliminar(prestamo);
-            if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia
-                prestamosActivos.agregarF(pendientes.primero());
-                prestamosTotales.agregarF(pendientes.primero());
-                pendientes.desacolar();
-            }
-            prestamo.getLibro().subirCantCopias();
-            System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto el libro: " + prestamo.getLibro().getTitulo() + "\n");
-        } else {
-            System.out.println("No puede realizarse la devolucion porque no existe ese prestamo\n");
-        }
-    }
-
     public void listarTodosPrestamos() {
         System.out.println("--- TODOS LOS PRESTAMOS ---");
         prestamosTotales.mostrar();
         System.out.println();
     }
 
-    public void buscarLibro(int isbn) {
-        if (libros.pertenece(isbn)) {
-            ConjuntoLibrosTDA aux = libros;
-            Libro libroAzar = aux.elegir(); // libro elegido al azar
-            while (libroAzar.getIsbn() != isbn) {
-                aux.sacar(libroAzar.getIsbn());
-                libroAzar = aux.elegir();
-            }
-            System.out.println("Libro encontrado: " + libroAzar.getTitulo() + ", ISBN: " + libroAzar.getIsbn());
+    // COPIAR ESTRUCTURAS
+    private ConjuntoLibrosTDA copiarConjuntoLibros() {
+        ConjuntoLibrosTDA aux = new ConjuntoLibrosLD();
+        aux.inicializarConjunto();
 
-        } else {
-            System.out.println("Libro no encontrado con ISBN: " + isbn);
+        ConjuntoLibrosTDA copia = new ConjuntoLibrosLD();
+        copia.inicializarConjunto();
+
+        Libro azar;
+
+        while (!libros.conjuntoVacio()) {
+            azar = libros.elegir();
+            aux.agregar(azar);
+            libros.sacar(azar.getIsbn());
         }
+
+        while (!aux.conjuntoVacio()) {
+            azar = aux.elegir();
+            libros.agregar(azar);
+            copia.agregar(azar);
+            aux.sacar(azar.getIsbn());
+        }
+        return copia;
+    }
+
+    private ColaListaDeEsperaTDA copiarCola() {
+        ColaListaDeEsperaTDA aux = new ColaListaDeEsperaDinamica();
+        aux.inicializarCola();
+
+        ColaListaDeEsperaTDA copia = new ColaListaDeEsperaDinamica();
+        copia.inicializarCola();
+
+        Prestamo primero;
+
+        while (!pendientes.colaVacia()) {
+            primero = pendientes.primero();
+            pendientes.desacolar();
+            aux.acolar(primero);
+        }
+
+        while (!aux.colaVacia()) {
+            primero = aux.primero();
+            aux.desacolar();
+            pendientes.acolar(primero);
+            copia.acolar(primero);
+        }
+        return copia;
     }
 }
