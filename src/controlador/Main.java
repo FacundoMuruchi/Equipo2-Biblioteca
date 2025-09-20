@@ -27,12 +27,14 @@ public class Main {
         sys.realizarDevolucion(pres1);
 
         sys.listarLibros();
+        sys.listarLibros();
+        sys.listarUsuarios();
         sys.listarUsuarios();
 //        sys.listarTodosPrestamos();
 //        sys.listarDevolucionesPendientes();
 //        sys.mostrarListaDeEspera();
 //
-        sys.buscarLibro(11111);
-        sys.buscarLibro(5234);
+        sys.buscarLibro2(11111);
+        sys.buscarLibro2(5234);
     }
 }

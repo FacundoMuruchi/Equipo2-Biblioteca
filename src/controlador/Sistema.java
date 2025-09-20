@@ -98,24 +98,49 @@ public class Sistema {
         System.out.println();
     }
 
+    private ConjuntoLibrosTDA copiarConjuntoLibros() {
+        ConjuntoLibrosTDA aux = new ConjuntoLibrosLD();
+        aux.inicializarConjunto();
+
+        ConjuntoLibrosTDA copia = new ConjuntoLibrosLD();
+        copia.inicializarConjunto();
+
+        Libro azar;
+
+        while (!libros.conjuntoVacio()) {
+            azar = libros.elegir();
+            aux.agregar(azar);
+            libros.sacar(azar.getIsbn());
+        }
+
+        while (!aux.conjuntoVacio()) {
+            azar = aux.elegir();
+            libros.agregar(azar);
+            copia.agregar(azar);
+            aux.sacar(azar.getIsbn());
+        }
+        return copia;
+    }
+
     public void listarLibros() {
         System.out.println("--- LIBROS ---");
-        ConjuntoLibrosTDA aux = new ConjuntoLibrosLD();
-        aux = libros;
+
+
+        ConjuntoLibrosTDA aux = copiarConjuntoLibros();
+
+        System.out.println(aux);
+
         while (!aux.conjuntoVacio()) {
             Libro libroAzar = aux.elegir(); // se elige un libro al azar
-            aux.sacar(libroAzar.getIsbn());
             System.out.println("Titulo: " + libroAzar.getTitulo() + ", Autor: " + libroAzar.getAutor() + ", ISBN: " + libroAzar.getIsbn() + ", Copias: " + libroAzar.getCopiasDisponibles());
+            aux.sacar(libroAzar.getIsbn());
         }
-//        libros.mostrar();
         System.out.println();
     }
 
     public void listarUsuarios() {
         System.out.println("--- USUARIOS ---");
-        ConjuntoUsuariosTDA dnisAux = new ConjuntoUsuariosEstatico();
-
-        dnisAux = usuarios.claves();
+        ConjuntoUsuariosTDA dnisAux = usuarios.claves();
 
         while (!dnisAux.conjuntoVacio()) {
 
@@ -129,7 +154,6 @@ public class Sistema {
 
             dnisAux.sacar(dniAzar);
         }
-//        usuarios.mostrar();
         System.out.println();
     }
 
@@ -178,6 +202,21 @@ public class Sistema {
         Libro libroEncontrado = libros.buscar(isbn);
         if (libroEncontrado != null) {
             System.out.println("Libro encontrado: " + libroEncontrado.getTitulo() + ", ISBN: " + libroEncontrado.getIsbn());
+        } else {
+            System.out.println("Libro no encontrado con ISBN: " + isbn);
+        }
+    }
+
+    public void buscarLibro2(int isbn) {
+        if (libros.pertenece(isbn)) {
+            ConjuntoLibrosTDA aux = libros;
+            Libro libroAzar = aux.elegir(); // libro elegido al azar
+            while (libroAzar.getIsbn() != isbn) {
+                aux.sacar(libroAzar.getIsbn());
+                libroAzar = aux.elegir();
+            }
+            System.out.println("Libro encontrado: " + libroAzar.getTitulo() + ", ISBN: " + libroAzar.getIsbn());
+
         } else {
             System.out.println("Libro no encontrado con ISBN: " + isbn);
         }
