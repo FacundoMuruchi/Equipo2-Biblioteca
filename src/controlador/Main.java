@@ -4,6 +4,9 @@ import entidades.Libro;
 import entidades.Prestamo;
 import entidades.Usuario;
 
+
+
+
 public class Main {
     public static void main(String[] args) {
         Sistema sys = new Sistema();
@@ -29,16 +32,17 @@ public class Main {
         Prestamo pres2 = sys.solicitarPrestamo(frankenstein, fede, "4-12-25");
         Prestamo pres3 = sys.solicitarPrestamo(principito, facu, "23-12-25");
         Prestamo pres4 = sys.solicitarPrestamo(harryPotter, facu, "10-12-25");
-//        Prestamo pres5 = sys.solicitarPrestamo(harryPotter, carlos, "10-12-25"); // no se realiza el prestamo porque carlos no esta registrado
+        Prestamo pres5 = sys.solicitarPrestamo(harryPotter, fede, "15-12-25");
+//        Prestamo pres6 = sys.solicitarPrestamo(frankenstein, carlos, "10-12-25"); // no se realiza el prestamo porque carlos no esta registrado
 
-//        sys.realizarDevolucion(pres2);
+//        sys.realizarDevolucion(pres1);
 
         // LISTAR PRESTAMOS, DEVOLUCIONES PENDIENTES Y COLA DE ESPERA
         sys.listarTodosPrestamos();
         sys.listarDevolucionesPendientes();
         sys.mostrarColaDeEspera();
 
-        // BUSACR LIBRO POR ISBN
+        // BUSCAR LIBRO POR ISBN
         sys.buscarLibro(11111);
         sys.buscarLibro(5234);
     }
