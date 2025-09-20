@@ -14,8 +14,6 @@ import tdas.diccionarios.DiccionarioSimpleUsuariosTDA;
 import tdas.listas.ListaPrestamoEstatica;
 import tdas.listas.ListaPrestamoTDA;
 
-import java.util.Scanner;
-
 public class Sistema {
     ConjuntoLibrosTDA libros;
     ConjuntoUsuariosTDA dnis;
@@ -122,13 +120,36 @@ public class Sistema {
         return copia;
     }
 
+    private ColaListaDeEsperaTDA copiarCola() {
+        ColaListaDeEsperaTDA aux = new ColaListaDeEsperaDinamica();
+        aux.inicializarCola();
+
+        ColaListaDeEsperaTDA copia = new ColaListaDeEsperaDinamica();
+        copia.inicializarCola();
+
+        Prestamo primero;
+
+        while (!pendientes.colaVacia()) {
+            primero = pendientes.primero();
+            pendientes.desacolar();
+            aux.acolar(primero);
+        }
+
+        while (!aux.colaVacia()) {
+            primero = aux.primero();
+            aux.desacolar();
+            pendientes.acolar(primero);
+            copia.acolar(primero);
+        }
+        return copia;
+    }
+
+
     public void listarLibros() {
         System.out.println("--- LIBROS ---");
 
 
         ConjuntoLibrosTDA aux = copiarConjuntoLibros();
-
-        System.out.println(aux);
 
         while (!aux.conjuntoVacio()) {
             Libro libroAzar = aux.elegir(); // se elige un libro al azar
@@ -158,11 +179,11 @@ public class Sistema {
     }
 
     public void mostrarListaDeEspera() {
-        ColaListaDeEsperaTDA aux = new ColaListaDeEsperaDinamica();
-        aux.inicializarCola();
-        aux = pendientes;
+        ColaListaDeEsperaTDA aux = copiarCola();
+
         System.out.println("--- COLA DE ESPERA ---");
         System.out.println("(Primero arriba)");
+
         while (!aux.colaVacia()){
             System.out.println("Nombre: " + aux.primero().getUsuario().getNombre() + ", Libro deseado: " + aux.primero().getLibro().getTitulo());
             aux.desacolar();
@@ -175,16 +196,17 @@ public class Sistema {
      * luego agrega a la lista de prestamos al primer prestamo de la cola de pendientes
      */
     public void realizarDevolucion(Prestamo prestamo) {
-        if (prestamo != null) {
+        if (prestamo != null) { // si el prestamo existe
             prestamosActivos.eliminar(prestamo);
             if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia
                 prestamosActivos.agregarF(pendientes.primero());
+                prestamosTotales.agregarF(pendientes.primero());
                 pendientes.desacolar();
             }
             prestamo.getLibro().subirCantCopias();
             System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto el libro: " + prestamo.getLibro().getTitulo() + "\n");
         } else {
-            System.out.println("No existe ese prestamo\n");
+            System.out.println("No puede realizarse la devolucion porque no existe ese prestamo\n");
         }
     }
 
@@ -194,20 +216,7 @@ public class Sistema {
         System.out.println();
     }
 
-    /**
-     * buscar existencia de un libro en el conjunto de libros segun su ISBN
-     * @param isbn
-     */
     public void buscarLibro(int isbn) {
-        Libro libroEncontrado = libros.buscar(isbn);
-        if (libroEncontrado != null) {
-            System.out.println("Libro encontrado: " + libroEncontrado.getTitulo() + ", ISBN: " + libroEncontrado.getIsbn());
-        } else {
-            System.out.println("Libro no encontrado con ISBN: " + isbn);
-        }
-    }
-
-    public void buscarLibro2(int isbn) {
         if (libros.pertenece(isbn)) {
             ConjuntoLibrosTDA aux = libros;
             Libro libroAzar = aux.elegir(); // libro elegido al azar

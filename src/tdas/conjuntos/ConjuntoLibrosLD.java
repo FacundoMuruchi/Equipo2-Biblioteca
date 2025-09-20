@@ -62,22 +62,4 @@ public class ConjuntoLibrosLD implements ConjuntoLibrosTDA {
         }
         return (aux != null);
     }
-
-    @Override
-    public Libro buscar(int isbn) {
-        if (c != null) {
-            if (c.info.getIsbn() == isbn) { // es el primero
-                return c.info;
-            } else { // es algun otro, lo buscamos
-                Nodo aux = c;
-                while (aux.sig != null && aux.sig.info.getIsbn() != isbn) {
-                    aux = aux.sig;
-                }
-                if (aux.sig != null) { // encontrado
-                    return aux.sig.info;
-                }
-            }
-        }
-        return null;
-    }
 }
