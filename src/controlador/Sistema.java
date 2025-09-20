@@ -16,7 +16,6 @@ import tdas.listas.ListaPrestamoTDA;
 
 public class Sistema {
     ConjuntoLibrosTDA libros;
-    ConjuntoUsuariosTDA dnis;
     DiccionarioSimpleUsuariosTDA usuarios;
     ListaPrestamoTDA prestamosActivos, prestamosTotales;
     ColaListaDeEsperaTDA pendientes;
@@ -27,9 +26,6 @@ public class Sistema {
     public Sistema() {
         libros = new ConjuntoLibrosLD();
         libros.inicializarConjunto();
-
-        dnis = new ConjuntoUsuariosEstatico();
-        dnis.inicializarConjunto();
 
         usuarios = new DiccionarioSimpleUsuariosEstatico();
         usuarios.inicializarDiccionario();
