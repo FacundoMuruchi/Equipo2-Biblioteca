@@ -178,7 +178,7 @@ public class Sistema {
         System.out.println();
     }
 
-    public void mostrarListaDeEspera() {
+    public void mostrarColaDeEspera() {
         ColaListaDeEsperaTDA aux = copiarCola();
 
         System.out.println("--- COLA DE ESPERA ---");
