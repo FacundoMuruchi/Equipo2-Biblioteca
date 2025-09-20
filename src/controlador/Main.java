@@ -4,9 +4,6 @@ import entidades.Libro;
 import entidades.Prestamo;
 import entidades.Usuario;
 
-
-
-
 public class Main {
     public static void main(String[] args) {
         Sistema sys = new Sistema();
@@ -43,7 +40,7 @@ public class Main {
         sys.mostrarColaDeEspera();
 
         // BUSCAR LIBRO POR ISBN
-        sys.buscarLibro(11111);
+        sys.buscarLibro(11191);
         sys.buscarLibro(5234);
     }
 }

@@ -111,7 +111,7 @@ public class Sistema {
      */
     public void buscarLibro(int isbn) {
         if (libros.pertenece(isbn)) {
-            ConjuntoLibrosTDA aux = libros;
+            ConjuntoLibrosTDA aux = copiarConjuntoLibros();
             Libro libroAzar = aux.elegir(); // libro elegido al azar
             while (libroAzar.getIsbn() != isbn) {
                 aux.sacar(libroAzar.getIsbn());
@@ -206,7 +206,7 @@ public class Sistema {
             aux.sacar(azar.getIsbn());
         }
         return copia;
-    }
+    } // O(n)
 
     private ColaListaDeEsperaTDA copiarCola() {
         ColaListaDeEsperaTDA aux = new ColaListaDeEsperaDinamica();
@@ -230,5 +230,5 @@ public class Sistema {
             copia.acolar(primero);
         }
         return copia;
-    }
+    } // O(n)
 }
