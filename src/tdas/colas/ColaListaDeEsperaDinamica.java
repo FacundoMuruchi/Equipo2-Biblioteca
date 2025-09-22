@@ -18,7 +18,7 @@ public class ColaListaDeEsperaDinamica implements ColaListaDeEsperaTDA {
     }
 
     @Override
-    public void acolar(Prestamo x) {
+    public void acolar(Prestamo x) { // O(1)
         Nodo nuevo = new Nodo();
         nuevo.info = x;
         nuevo.sig = null;

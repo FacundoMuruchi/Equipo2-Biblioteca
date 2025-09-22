@@ -55,7 +55,7 @@ public class ConjuntoLibrosLD implements ConjuntoLibrosTDA {
     }
 
     @Override
-    public boolean pertenece(int isbn) {
+    public boolean pertenece(int isbn) { // O(n)
         Nodo aux = c;
         while (aux != null && aux.info.getIsbn() != isbn) {
             aux = aux.sig;

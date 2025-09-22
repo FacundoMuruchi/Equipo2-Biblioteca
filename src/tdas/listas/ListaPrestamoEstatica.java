@@ -21,7 +21,7 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
     }
 
     @Override
-    public void eliminar(Prestamo prestamo) {
+    public void eliminar(Prestamo prestamo) { // O(n)
         int indx = buscar(prestamo);
         if (indx != -1) { // si la clave existe
             arr[indx] = arr[indice - 1]; // reemplaza con el ultimo elemento de la lista
@@ -31,7 +31,7 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
     }
 
     @Override
-    public int buscar(Prestamo prestamo) {
+    public int buscar(Prestamo prestamo) { // O(n)
         int i = indice - 1; // ultimo elemento
         while (i >= 0 && arr[i] != prestamo)
             i--;

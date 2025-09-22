@@ -21,7 +21,7 @@ public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuar
 		cant = 0;
 	}
 
-	public void agregar(int clave, Usuario valor) {
+	public void agregar(int clave, Usuario valor) { // O(n)
 		int pos = Clave2Ind(clave);
 		if (pos == -1) { // La clave no existe
 			pos = cant; // Nueva entrada
@@ -34,7 +34,7 @@ public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuar
 		elem.valor= valor;
 	}
 
-	private int Clave2Ind(int clave) {
+	private int Clave2Ind(int clave) { // O(n)
 		int i = cant - 1;
 		while (i >= 0 && elementos[i].clave != clave)
 			i--;
@@ -49,7 +49,7 @@ public class DiccionarioSimpleUsuariosEstatico implements DiccionarioSimpleUsuar
 		}
 	}
 
-	public Usuario recuperar(int clave) {
+	public Usuario recuperar(int clave) { // O(n)
 		int pos = Clave2Ind(clave);
 		return elementos[pos].valor;
 	}

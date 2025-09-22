@@ -43,7 +43,7 @@ public class Sistema {
     /**
      * registrar libro nuevo y añadirlo al conjunto de libros
      */
-    public Libro agregarLibro(String titulo, String autor, int isbn, int copiasDisponibles) {
+    public Libro agregarLibro(String titulo, String autor, int isbn, int copiasDisponibles) { // O(n)
         Libro libro = new Libro(titulo, autor, isbn, copiasDisponibles);
         if (libros.pertenece(isbn)) {
             System.out.println("No se puede añadir el libro '" + titulo + "' porque ya hay uno registrado con ISBN: " + isbn + "\n");
@@ -55,7 +55,7 @@ public class Sistema {
     /**
      * registrar usuario nuevo y agregarlo al diccionario
      */
-    public Usuario registrarUsuario(int dni, String nombre, String direccion, int telefono) {
+    public Usuario registrarUsuario(int dni, String nombre, String direccion, int telefono) { // O(n)
         Usuario usuario = new Usuario(dni, nombre, direccion, telefono);
         if (usuarios.claves().pertenece(dni)) {
             System.out.println("No se puede añadir al usuario '" + nombre + "' porque ya hay uno registrado con DNI: " + dni + "\n");
@@ -69,15 +69,15 @@ public class Sistema {
      * generar solicitud de prestamo. si está disponible, se agrega a la lista de prestamos y a la lista personal del usuario correspondiente,
      * sino se acola en la cola de prestamos pendientes
      */
-    public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
+    public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) { // O(n)
         Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
-        if (usuarios.recuperar(usuario.getDni()) == usuario) {
+        if (usuarios.recuperar(usuario.getDni()) == usuario) { // O(n)
             if (libro.getCopiasDisponibles() > 0) {
-                prestamosActivos.agregarF(prestamo);
+                prestamosActivos.agregarF(prestamo); // O(1)
                 prestamosTotales.agregarF(prestamo);
                 libro.bajarCantCopias();
             } else {
-                pendientes.acolar(prestamo);
+                pendientes.acolar(prestamo); // O(1)
             }
         } else {
             System.out.println("No puede solicitarse el prestamo porque '" + usuario.getNombre() + "' no está registrado \n");
@@ -90,13 +90,13 @@ public class Sistema {
      * elimina el prestamo de la lista de prestamos activos,
      * luego agrega a la lista de prestamos al primer prestamo de la cola de pendientes
      */
-    public void realizarDevolucion(Prestamo prestamo) {
+    public void realizarDevolucion(Prestamo prestamo) { // O(n)
         if (prestamo != null) { // si el prestamo existe
-            prestamosActivos.eliminar(prestamo);
-            if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia
-                prestamosActivos.agregarF(pendientes.primero());
+            prestamosActivos.eliminar(prestamo); // O(n)
+            if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia O(1)
+                prestamosActivos.agregarF(pendientes.primero()); // O(1)
                 prestamosTotales.agregarF(pendientes.primero());
-                pendientes.desacolar();
+                pendientes.desacolar(); // O(1)
             }
             prestamo.getLibro().subirCantCopias();
             System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto el libro: " + prestamo.getLibro().getTitulo() + "\n");
@@ -109,13 +109,13 @@ public class Sistema {
      * buscar libro en base a su isbn
      * @param isbn
      */
-    public void buscarLibro(int isbn) {
-        if (libros.pertenece(isbn)) {
-            ConjuntoLibrosTDA aux = copiarConjuntoLibros();
+    public void buscarLibro(int isbn) { // O(n)
+        if (libros.pertenece(isbn)) { // O(n)
+            ConjuntoLibrosTDA aux = copiarConjuntoLibros(); // O(n)
             Libro libroAzar = aux.elegir(); // libro elegido al azar
-            while (libroAzar.getIsbn() != isbn) {
+            while (libroAzar.getIsbn() != isbn) { // O(n)
                 aux.sacar(libroAzar.getIsbn());
-                libroAzar = aux.elegir();
+                libroAzar = aux.elegir(); // O(1)
             }
             System.out.println("Libro encontrado: " + libroAzar.getTitulo() + ", ISBN: " + libroAzar.getIsbn());
 
@@ -175,7 +175,7 @@ public class Sistema {
             aux.desacolar();
         }
         System.out.println();
-    }
+    } // O(n)
 
     public void listarTodosPrestamos() {
         System.out.println("--- TODOS LOS PRESTAMOS ---");
@@ -184,7 +184,7 @@ public class Sistema {
     }
 
     // COPIAR ESTRUCTURAS
-    private ConjuntoLibrosTDA copiarConjuntoLibros() {
+    private ConjuntoLibrosTDA copiarConjuntoLibros() { // O(n)
         ConjuntoLibrosTDA aux = new ConjuntoLibrosLD();
         aux.inicializarConjunto();
 
