@@ -18,7 +18,7 @@ public class Main {
         Usuario facu = sys.registrarUsuario(47307150, "facu", "bera", 1125037150);
         Usuario juan = sys.registrarUsuario(52307157, "juan", "quilmes", 1199037540);
         Usuario fede = sys.registrarUsuario(49872632, "fede", "ranelagh", 1169373462);
-//        Usuario carlos = sys.registrarUsuario(49872632, "carlitos", "caba", 634735475); // no se añade porque ya existe dni
+        Usuario carlos = sys.registrarUsuario(49872632, "carlitos", "caba", 634735475); // no se añade porque ya existe dni
 
         // LISTAR LIBROS Y USUARIOS REGISTRADOS
         sys.listarLibros();

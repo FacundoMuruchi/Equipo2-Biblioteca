@@ -66,7 +66,7 @@ public class Sistema {
     }
 
     /**
-     * generar solicitud de prestamo. si está disponible, se agrega a la lista de prestamos y a la lista personal del usuario correspondiente,
+     * generar solicitud de prestamo. si está disponible, se agrega a la lista de prestamos activos y totales,
      * sino se acola en la cola de prestamos pendientes
      */
     public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) { // O(n)
