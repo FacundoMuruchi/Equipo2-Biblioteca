@@ -13,7 +13,7 @@ public class ABB implements ArbolBinarioTDA{
 
     @Override
     public void inicializarArbol() {
-
+        raiz = null;
     }
 
     @Override
