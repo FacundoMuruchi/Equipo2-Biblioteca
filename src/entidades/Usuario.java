@@ -5,12 +5,14 @@ import tdas.listas.ListaPrestamoTDA;
 public class Usuario {
     private int dni;
     private String nombre;
+    private String apellido;
     private String direccion;
     private int telefono;
 
-    public Usuario(int dni, String nombre, String direccion, int telefono) {
+    public Usuario(int dni, String nombre, String apellido, String direccion, int telefono) {
         this.dni = dni;
         this.nombre = nombre;
+        this.apellido = apellido;
         this.direccion = direccion;
         this.telefono = telefono;
     }
@@ -29,6 +31,10 @@ public class Usuario {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
     }
 
     public void setDireccion(String direccion) {

@@ -1,10 +1,11 @@
 package tdas.arboles;
 
+import entidades.Libro;
 import tdas.arboles.ArbolBinarioTDA;
 
 public class ABB implements ArbolBinarioTDA{
     private class Nodo {
-        int dato;
+        Libro dato;
         ArbolBinarioTDA subIzq;
         ArbolBinarioTDA subDer;
     }
@@ -17,7 +18,7 @@ public class ABB implements ArbolBinarioTDA{
     }
 
     @Override
-    public int raiz() {
+    public Libro raiz() {
         return raiz.dato;
     }
 
@@ -37,7 +38,7 @@ public class ABB implements ArbolBinarioTDA{
     }
 
     @Override
-    public void agregarElem(int x) { // los elementos siempre se agrergan como hoja
+    public void agregarElem(Libro x) { // los elementos siempre se agrergan como hoja
         if (raiz == null) { // caso base
             raiz = new Nodo();
             raiz.dato = x;
@@ -47,21 +48,21 @@ public class ABB implements ArbolBinarioTDA{
             raiz.subDer.inicializarArbol();
 
             // casos recursivos
-        } else if (raiz.dato > x) { // si es menor
+        } else if (raiz.dato.getIsbn() > x.getIsbn()) { // si es menor
             raiz.subIzq.agregarElem(x);
-        } else if (raiz.dato < x) { // si es mayor
+        } else if (raiz.dato.getIsbn() < x.getIsbn()) { // si es mayor
             raiz.subDer.agregarElem(x);
         }
     }
 
-    private int mayor (ArbolBinarioTDA a) {
+    private Libro mayor (ArbolBinarioTDA a) {
         if (a.hijoDer().arbolVacio())
             return a.raiz();
         else
             return mayor(a.hijoDer());
     }
 
-    private int menor (ArbolBinarioTDA a) {
+    private Libro menor (ArbolBinarioTDA a) {
         if (a.hijoIzq().arbolVacio())
             return a.raiz();
         else
@@ -69,7 +70,7 @@ public class ABB implements ArbolBinarioTDA{
     }
 
     @Override
-    public void eliminarElem(int x) {
+    public void eliminarElem(Libro x) {
         if (raiz != null) {
             if (raiz.dato == x && raiz.subDer.arbolVacio() && raiz.subIzq.arbolVacio()) { // si es hoja
                 raiz = null;
@@ -80,13 +81,11 @@ public class ABB implements ArbolBinarioTDA{
                 raiz.dato = this.menor(raiz.subDer); // tomo el menor de la derecha
                 raiz.subDer.eliminarElem(raiz.dato);
                 // buscar raiz de x
-            } else if (raiz.dato < x) { // si x es mayor que la raiz
+            } else if (raiz.dato.getIsbn() < x.getIsbn()) { // si x es mayor que la raiz
                 raiz.subDer.eliminarElem(x);
             } else { // si es menor que la raiz
                 raiz.subIzq.eliminarElem(x);
             }
         }
     }
-
-
 }

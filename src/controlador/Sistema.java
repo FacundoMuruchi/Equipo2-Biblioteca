@@ -3,6 +3,8 @@ package controlador;
 import entidades.Libro;
 import entidades.Prestamo;
 import entidades.Usuario;
+import tdas.arboles.ABB;
+import tdas.arboles.ArbolBinarioTDA;
 import tdas.colas.ColaListaDeEsperaDinamica;
 import tdas.colas.ColaListaDeEsperaTDA;
 import tdas.conjuntos.ConjuntoLibrosLD;
@@ -15,6 +17,7 @@ import tdas.listas.ListaPrestamoTDA;
 
 public class Sistema {
     ConjuntoLibrosTDA libros;
+    ArbolBinarioTDA arbolLibros;
     DiccionarioSimpleUsuariosTDA usuarios;
     ListaPrestamoTDA prestamosActivos, prestamosTotales;
     ColaListaDeEsperaTDA pendientes;
@@ -25,6 +28,9 @@ public class Sistema {
     public Sistema() {
         libros = new ConjuntoLibrosLD();
         libros.inicializarConjunto();
+
+        arbolLibros = new ABB();
+        arbolLibros.inicializarArbol();
 
         usuarios = new DiccionarioSimpleUsuariosEstatico();
         usuarios.inicializarDiccionario();
@@ -49,14 +55,15 @@ public class Sistema {
             System.out.println("No se puede añadir el libro '" + titulo + "' porque ya hay uno registrado con ISBN: " + isbn + "\n");
         }
         libros.agregar(libro);
+        arbolLibros.agregarElem(libro);
         return libro;
     }
 
     /**
      * registrar usuario nuevo y agregarlo al diccionario
      */
-    public Usuario registrarUsuario(int dni, String nombre, String direccion, int telefono) { // O(n)
-        Usuario usuario = new Usuario(dni, nombre, direccion, telefono);
+    public Usuario registrarUsuario(int dni, String nombre, String apellido, String direccion, int telefono) { // O(n)
+        Usuario usuario = new Usuario(dni, nombre, apellido, direccion, telefono);
         if (usuarios.claves().pertenece(dni)) {
             System.out.println("No se puede añadir al usuario '" + nombre + "' porque ya hay uno registrado con DNI: " + dni + "\n");
         } else {
@@ -107,21 +114,24 @@ public class Sistema {
 
     /**
      * buscar libro en base a su isbn
-     * @param isbn
+     * @param isbn ISBN a buscar
      */
     public void buscarLibro(int isbn) { // O(n)
         if (libros.pertenece(isbn)) { // O(n)
-            ConjuntoLibrosTDA aux = copiarConjuntoLibros(); // O(n)
-            Libro libroAzar = aux.elegir(); // libro elegido al azar
-            while (libroAzar.getIsbn() != isbn) { // O(n)
-                aux.sacar(libroAzar.getIsbn());
-                libroAzar = aux.elegir(); // O(1)
-            }
-            System.out.println("Libro encontrado: " + libroAzar.getTitulo() + ", ISBN: " + libroAzar.getIsbn());
-
+            Libro encontrado = buscarLibroRecursivo(arbolLibros, isbn);
+            System.out.println("Libro encontrado: " + encontrado.getTitulo() + ", ISBN: " + encontrado.getIsbn());
         } else {
-            System.out.println("Libro no encontrado con ISBN: " + isbn);
+            System.out.println("Libro NO encontrado con ISBN: " + isbn);
         }
+    }
+
+    private Libro buscarLibroRecursivo(ArbolBinarioTDA a, int isbn) {
+     if (a.raiz().getIsbn() == isbn)
+         return a.raiz();
+     else if (a.raiz().getIsbn() > isbn) {
+         return buscarLibroRecursivo(a.hijoIzq(), isbn);
+     } else
+         return buscarLibroRecursivo(a.hijoDer(), isbn);
     }
 
     // LISTAR LIBROS, USUARIOS, COLA DE ESPERA Y PRESTAMOS
@@ -156,6 +166,7 @@ public class Sistema {
 
             System.out.println("DNI: " + dniAzar +
                     ", Nombre: " + usuarioAzar.getNombre() +
+                    ", Apellido: " + usuarioAzar.getApellido() +
                     ", Direccion: " + usuarioAzar.getDireccion() +
                     ", Telefono: " + usuarioAzar.getTelefono());
 
@@ -171,7 +182,7 @@ public class Sistema {
         System.out.println("(Primero arriba)");
 
         while (!aux.colaVacia()){
-            System.out.println("Nombre: " + aux.primero().getUsuario().getNombre() + ", Libro deseado: " + aux.primero().getLibro().getTitulo());
+            System.out.println("Usuario: " + aux.primero().getUsuario().getNombre() + " " + aux.primero().getUsuario().getApellido() + ", Libro deseado: " + aux.primero().getLibro().getTitulo());
             aux.desacolar();
         }
         System.out.println();
@@ -181,6 +192,20 @@ public class Sistema {
         System.out.println("--- TODOS LOS PRESTAMOS ---");
         prestamosTotales.mostrar();
         System.out.println();
+    }
+
+    public void mostrarLibrosOrdenados() {
+        System.out.println("--- LIBROS ORDENADOS POR ISBN ---");
+        inOrder(arbolLibros);
+        System.out.println();
+    }
+
+    private void inOrder(ArbolBinarioTDA a) {
+        if (!a.arbolVacio()) {
+            inOrder(a.hijoIzq());
+            System.out.println("Titulo: " + a.raiz().getTitulo() + ", ISBN: " + a.raiz().getIsbn());
+            inOrder(a.hijoDer());
+        }
     }
 
     // COPIAR ESTRUCTURAS
