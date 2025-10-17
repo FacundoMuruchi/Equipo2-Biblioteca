@@ -5,6 +5,7 @@ import entidades.Prestamo;
 import entidades.Usuario;
 import tdas.arboles.ABB;
 import tdas.arboles.ArbolBinarioTDA;
+import tdas.arboles.AVL.ArbolUsuariosAVL;
 import tdas.colas.ColaListaDeEsperaDinamica;
 import tdas.colas.ColaListaDeEsperaTDA;
 import tdas.conjuntos.ConjuntoLibrosLD;
@@ -15,12 +16,14 @@ import tdas.diccionarios.DiccionarioSimpleUsuariosTDA;
 import tdas.listas.ListaPrestamoEstatica;
 import tdas.listas.ListaPrestamoTDA;
 
+
 public class Sistema {
     ConjuntoLibrosTDA libros;
     ArbolBinarioTDA arbolLibros;
     DiccionarioSimpleUsuariosTDA usuarios;
     ListaPrestamoTDA prestamosActivos, prestamosTotales;
     ColaListaDeEsperaTDA pendientes;
+    private ArbolUsuariosAVL indiceUsuarios;
 
     /**
      * constructor: inicializa estructuras
@@ -43,6 +46,9 @@ public class Sistema {
 
         pendientes = new ColaListaDeEsperaDinamica();
         pendientes.inicializarCola();
+
+        indiceUsuarios = new ArbolUsuariosAVL();
+        indiceUsuarios.inicializarArbol();
     }
 
     // METODOS DE LA BIBLIOTECA
@@ -68,6 +74,7 @@ public class Sistema {
             System.out.println("No se puede añadir al usuario '" + nombre + "' porque ya hay uno registrado con DNI: " + dni + "\n");
         } else {
             usuarios.agregar(dni, usuario);
+            indiceUsuarios.insertar(usuario);
         }
         return usuario;
     }
@@ -256,4 +263,8 @@ public class Sistema {
         }
         return copia;
     } // O(n)
+
+    public void listarUsuariosOrdenados() {
+        indiceUsuarios.listarUsuariosOrdenados();
+    }
 }
