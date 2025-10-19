@@ -2,136 +2,231 @@ package tdas.arboles.AVL;
 
 import entidades.Usuario;
 
-public class ArbolUsuariosAVL {
-    private class NodoAVL {
-        Usuario usuario;
-        NodoAVL izquierdo;
-        NodoAVL derecho;
+public class ArbolUsuariosAVL implements ArbolAVLTDA {
+
+    
+    public class Nodo {
+        public Usuario usuario; // Dato almacenado
+        Nodo izquierdo;
+        Nodo derecho;
         int altura;
+
+        Nodo(Usuario usuario) {
+            this.usuario = usuario;
+            this.izquierdo = null;
+            this.derecho = null;
+            this.altura = 1; // altura inicial
+        }
     }
 
-    private NodoAVL raiz;
+    
+    private Nodo raiz;
 
-    public void inicializarArbol() {
-        raiz = null;
+    
+    public ArbolUsuariosAVL() {
+        this.raiz = null;
     }
 
-    private int altura(NodoAVL n) {
-        return (n == null) ? 0 : n.altura;
+    @Override
+    public void insertarUsuario(Usuario usuario) {
+        raiz = insertarRecursivo(raiz, usuario);
     }
 
-    private int balanceFactor(NodoAVL n) {
-        return (n == null) ? 0 : altura(n.izquierdo) - altura(n.derecho);
-    }
-
-    private NodoAVL rotacionDerecha(NodoAVL y) {
-        NodoAVL x = y.izquierdo;
-        NodoAVL temp = x.derecho;
-
-        x.derecho = y;
-        y.izquierdo = temp;
-
-        y.altura = Math.max(altura(y.izquierdo), altura(y.derecho)) + 1;
-        x.altura = Math.max(altura(x.izquierdo), altura(x.derecho)) + 1;
-
-        return x;
-    }
-
-    private NodoAVL rotacionIzquierda(NodoAVL x) {
-        NodoAVL y = x.derecho;
-        NodoAVL temp = y.izquierdo;
-
-        y.izquierdo = x;
-        x.derecho = temp;
-
-        x.altura = Math.max(altura(x.izquierdo), altura(x.derecho)) + 1;
-        y.altura = Math.max(altura(y.izquierdo), altura(y.derecho)) + 1;
-
-        return y;
-    }
-
-    public void insertar(Usuario usuario) {
-        raiz = insertarRec(raiz, usuario);
-    }
-
-    private NodoAVL insertarRec(NodoAVL nodo, Usuario usuario) {
+    private Nodo insertarRecursivo(Nodo nodo, Usuario usuario) {
+        // Caso base: si el nodo es nulo, creamos uno nuevo
         if (nodo == null) {
-            NodoAVL nuevo = new NodoAVL();
-            nuevo.usuario = usuario;
-            nuevo.altura = 1;
-            return nuevo;
+            return new Nodo(usuario);
         }
 
-        // Comparación robusta por apellido
-        String[] partes1 = nodo.usuario.getNombre().trim().split(" ");
-        String[] partes2 = usuario.getNombre().trim().split(" ");
-        String ap1 = (partes1.length > 1) ? partes1[partes1.length - 1] : partes1[0];
-        String ap2 = (partes2.length > 1) ? partes2[partes2.length - 1] : partes2[0];
+        //Comparar apellidos (alfabéticamente, sin usar compareTo)
+        String apellidoNuevo = usuario.getApellido().toLowerCase();
+        String apellidoNodo = nodo.usuario.getApellido().toLowerCase();
 
-        int cmp = ap2.compareToIgnoreCase(ap1);
+        // Comparación carácter a carácter
+        int i = 0;
+        while (i < apellidoNuevo.length() && i < apellidoNodo.length() &&
+                       apellidoNuevo.charAt(i) == apellidoNodo.charAt(i)) {
+            i++;
+        }
 
-        if (cmp < 0)
-            nodo.izquierdo = insertarRec(nodo.izquierdo, usuario);
-        else if (cmp > 0)
-            nodo.derecho = insertarRec(nodo.derecho, usuario);
-        else
-            return nodo; // apellido duplicado (ignorar)
+        boolean esMenor = false;
+        boolean esMayor = false;
 
-        nodo.altura = 1 + Math.max(altura(nodo.izquierdo), altura(nodo.derecho));
+        if (i < apellidoNuevo.length() && i < apellidoNodo.length()) {
+            if (apellidoNuevo.charAt(i) < apellidoNodo.charAt(i)) {
+                esMenor = true;
+            } else if (apellidoNuevo.charAt(i) > apellidoNodo.charAt(i)) {
+                esMayor = true;
+            }
+        } else if (apellidoNuevo.length() < apellidoNodo.length()) {
+            esMenor = true; // ejemplo: “paz” < “pazos”
+        } else if (apellidoNuevo.length() > apellidoNodo.length()) {
+            esMayor = true;
+        }
 
-        int balance = balanceFactor(nodo);
+        // Insertar recursivamente
+        if (esMenor) {
+            nodo.izquierdo = insertarRecursivo(nodo.izquierdo, usuario);
+        } else if (esMayor) {
+            nodo.derecho = insertarRecursivo(nodo.derecho, usuario);
+        } else {
+            // Si el apellido es igual, no se inserta (para evitar duplicados)
+            return nodo;
+        }
 
-        // Rotaciones necesarias
-        if (balance > 1 && ap2.compareToIgnoreCase(ap1) < 0)
+        // Actualizar altura del nodo actual
+        nodo.altura = 1 + Math.max(getAltura(nodo.izquierdo), getAltura(nodo.derecho));
+
+        //  Calcular balance y aplicar rotaciones si es necesario
+        int balance = getBalance(nodo);
+
+        // Caso Izquierda-Izquierda
+        if (balance > 1 && esMenor) {
             return rotacionDerecha(nodo);
-        if (balance < -1 && ap2.compareToIgnoreCase(ap1) > 0)
+        }
+
+        // Caso Derecha-Derecha
+        if (balance < -1 && esMayor) {
             return rotacionIzquierda(nodo);
-        if (balance > 1 && ap2.compareToIgnoreCase(ap1) > 0) {
+        }
+
+        // Caso Izquierda-Derecha
+        if (balance > 1 && esMayor) {
             nodo.izquierdo = rotacionIzquierda(nodo.izquierdo);
             return rotacionDerecha(nodo);
         }
-        if (balance < -1 && ap2.compareToIgnoreCase(ap1) < 0) {
+
+        // Caso Derecha-Izquierda
+        if (balance < -1 && esMenor) {
             nodo.derecho = rotacionDerecha(nodo.derecho);
             return rotacionIzquierda(nodo);
         }
 
-        return nodo;
+        return nodo; // sin cambios
     }
 
-    // 🔍 Nueva funcionalidad: buscar usuario por apellido
-    public Usuario buscarPorApellido(String apellido) {
-        return buscarPorApellidoRec(raiz, apellido.trim().toLowerCase());
+    // Implementación del método buscar(String apellido) de la interfaz ArbolAVLTDA
+    @Override
+    public Nodo buscar(String apellido) {
+        return buscarRecursivo(raiz, apellido.toLowerCase());
     }
 
-    private Usuario buscarPorApellidoRec(NodoAVL nodo, String apellidoBuscado) {
-        if (nodo == null) return null;
-
-        String[] partes = nodo.usuario.getNombre().trim().split(" ");
-        String apellidoNodo = (partes.length > 1) ? partes[partes.length - 1].toLowerCase() : partes[0].toLowerCase();
-
-        int cmp = apellidoBuscado.compareTo(apellidoNodo);
-
-        if (cmp == 0)
-            return nodo.usuario;
-        else if (cmp < 0)
-            return buscarPorApellidoRec(nodo.izquierdo, apellidoBuscado);
-        else
-            return buscarPorApellidoRec(nodo.derecho, apellidoBuscado);
-    }
-
-    public void listarUsuariosOrdenados() {
-        System.out.println("--- USUARIOS ORDENADOS POR APELLIDO ---");
-        inOrder(raiz);
-        System.out.println();
-    }
-
-    private void inOrder(NodoAVL nodo) {
-        if (nodo != null) {
-            inOrder(nodo.izquierdo);
-            System.out.println("DNI: " + nodo.usuario.getDni() +
-                    ", Nombre: " + nodo.usuario.getNombre() +
-                    ", Dirección: " + nodo.usuario.getDireccion());
-            inOrder(nodo.derecho);
+    private Nodo buscarRecursivo(Nodo nodo, String apellidoBuscado) {
+        if (nodo == null) {
+            return null;
         }
+
+        String apellidoNodo = nodo.usuario.getApellido().toLowerCase();
+
+        if (apellidoBuscado.equals(apellidoNodo)) {
+            return nodo;
+        }
+
+        // comparar sin usar compareTo
+        int i = 0;
+        while (i < apellidoBuscado.length() && i < apellidoNodo.length() &&
+                       apellidoBuscado.charAt(i) == apellidoNodo.charAt(i)) {
+            i++;
+        }
+
+        if (i < apellidoBuscado.length() && i < apellidoNodo.length()) {
+            if (apellidoBuscado.charAt(i) < apellidoNodo.charAt(i)) {
+                return buscarRecursivo(nodo.izquierdo, apellidoBuscado);
+            } else {
+                return buscarRecursivo(nodo.derecho, apellidoBuscado);
+            }
+        } else if (apellidoBuscado.length() < apellidoNodo.length()) {
+            return buscarRecursivo(nodo.izquierdo, apellidoBuscado);
+        } else if (apellidoBuscado.length() > apellidoNodo.length()) {
+            return buscarRecursivo(nodo.derecho, apellidoBuscado);
+        }
+
+        return null;
+    }
+
+
+    @Override
+    public void recorridoInorden() {
+        recorridoInordenRecursivo(raiz);
+    }
+
+    private void recorridoInordenRecursivo(Nodo nodo) {
+        if (nodo != null) {
+            recorridoInordenRecursivo(nodo.izquierdo);
+            System.out.println("Apellido: " + nodo.usuario.getApellido() + ", DNI: " + nodo.usuario.getDni());
+            recorridoInordenRecursivo(nodo.derecho);
+        }
+    }
+
+    private int getAltura(Nodo nodo) {
+        if (nodo == null) {
+            return 0;
+        } else {
+            return nodo.altura;
+        }
+    }
+
+    private int getBalance(Nodo nodo) {
+        if (nodo == null) {
+            return 0;
+        } else {
+            return getAltura(nodo.izquierdo) - getAltura(nodo.derecho);
+        }
+    }
+
+    private Nodo rotacionDerecha(Nodo y) {
+        Nodo x = y.izquierdo;
+        Nodo T2 = x.derecho;
+
+        x.derecho = y;
+        y.izquierdo = T2;
+
+        y.altura = Math.max(getAltura(y.izquierdo), getAltura(y.derecho)) + 1;
+        x.altura = Math.max(getAltura(x.izquierdo), getAltura(x.derecho)) + 1;
+
+        return x;
+    }
+
+    private Nodo rotacionIzquierda(Nodo x) {
+        Nodo y = x.derecho;
+        Nodo T2 = y.izquierdo;
+
+        y.izquierdo = x;
+        x.derecho = T2;
+
+        x.altura = Math.max(getAltura(x.izquierdo), getAltura(x.derecho)) + 1;
+        y.altura = Math.max(getAltura(y.izquierdo), getAltura(y.derecho)) + 1;
+
+        return y;
+    }
+
+    // Método auxiliar público para buscar por DNI (no está en la interfaz)
+
+    public Usuario buscarPorDni(int dni) {
+        Nodo resultado = buscarPorDniRecursivo(raiz, dni);
+        if (resultado != null) {
+            return resultado.usuario;
+        } else {
+            return null;
+        }
+    }
+
+    private Nodo buscarPorDniRecursivo(Nodo nodo, int dni) {
+        if (nodo == null) {
+            return null;
+        }
+        
+        if (dni == nodo.usuario.getDni()) {
+            return nodo;
+        }
+        
+        // Recorre subárbol izquierdo
+        Nodo encontrado = buscarPorDniRecursivo(nodo.izquierdo, dni);
+        if (encontrado != null) {
+            return encontrado;
+        }
+        
+        // Recorre subárbol derecho
+        return buscarPorDniRecursivo(nodo.derecho, dni);
     }
 }

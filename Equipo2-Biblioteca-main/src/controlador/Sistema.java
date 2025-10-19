@@ -6,6 +6,7 @@ import entidades.Usuario;
 import tdas.arboles.ABB;
 import tdas.arboles.ArbolBinarioTDA;
 import tdas.arboles.AVL.ArbolUsuariosAVL;
+import tdas.arboles.AVL.ArbolUsuariosAVL.Nodo;
 import tdas.colas.ColaListaDeEsperaDinamica;
 import tdas.colas.ColaListaDeEsperaTDA;
 import tdas.conjuntos.ConjuntoLibrosLD;
@@ -47,18 +48,18 @@ public class Sistema {
         pendientes = new ColaListaDeEsperaDinamica();
         pendientes.inicializarCola();
 
+        // Inicialización de AVL. No se llama a 'inicializarArbol' en un TDA basado en nodos.
         indiceUsuarios = new ArbolUsuariosAVL();
-        indiceUsuarios.inicializarArbol();
     }
 
-    // METODOS DE LA BIBLIOTECA
     /**
      * registrar libro nuevo y añadirlo al conjunto de libros
      */
     public Libro agregarLibro(String titulo, String autor, int isbn, int copiasDisponibles) { // O(n)
         Libro libro = new Libro(titulo, autor, isbn, copiasDisponibles);
-        if (libros.pertenece(isbn)) {
+        if (libros.pertenece(isbn)) { // O(n) o similar, dependiendo de la implementación de Conjunto
             System.out.println("No se puede añadir el libro '" + titulo + "' porque ya hay uno registrado con ISBN: " + isbn + "\n");
+            return null; // Devolver null si no se agrega
         }
         libros.agregar(libro);
         arbolLibros.agregarElem(libro);
@@ -66,32 +67,44 @@ public class Sistema {
     }
 
     /**
-     * registrar usuario nuevo y agregarlo al diccionario
+     * registrar usuario nuevo y agregarlo al diccionario (por DNI) y al AVL (por Apellido).
      */
-    public Usuario registrarUsuario(int dni, String nombre, String apellido, String direccion, int telefono) { // O(n)
+    public Usuario registrarUsuario(int dni, String nombre, String apellido, String direccion, int telefono) { // O(log n) + O(n)
         Usuario usuario = new Usuario(dni, nombre, apellido, direccion, telefono);
-        if (usuarios.claves().pertenece(dni)) {
+        
+        // 1. Verificar unicidad por DNI en el Diccionario (O(n) o más rápido, dependiendo de la TDA)
+        if (usuarios.claves().pertenece(dni)) { 
             System.out.println("No se puede añadir al usuario '" + nombre + "' porque ya hay uno registrado con DNI: " + dni + "\n");
         } else {
-            usuarios.agregar(dni, usuario);
-            indiceUsuarios.insertar(usuario);
+            // 2. Insertar en el Diccionario (registro principal por DNI)
+            usuarios.agregar(dni, usuario); 
+            
+            // 3. Insertar en el Árbol AVL (índice ordenado por Apellido)
+            // Asumo que el método en ArbolUsuariosAVL se llama 'insertarUsuario'
+            indiceUsuarios.insertarUsuario(usuario); 
+            System.out.println("Usuario " + nombre + " " + apellido + " registrado con éxito.");
         }
         return usuario;
     }
 
     /**
-     * generar solicitud de prestamo. si está disponible, se agrega a la lista de prestamos activos y totales,
+     * Genera solicitud de prestamo. si está disponible, se agrega a la lista de prestamos activos y totales,
      * sino se acola en la cola de prestamos pendientes
      */
     public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) { // O(n)
         Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
-        if (usuarios.recuperar(usuario.getDni()) == usuario) { // O(n)
+        
+        // Verifica si el usuario existe en el Diccionario por DNI.
+        // Se asume que DiccionarioSimpleUsuariosEstatico.recuperar() devuelve null si no existe
+        if (usuarios.recuperar(usuario.getDni()) != null) { // O(n)
             if (libro.getCopiasDisponibles() > 0) {
                 prestamosActivos.agregarF(prestamo); // O(1)
                 prestamosTotales.agregarF(prestamo);
                 libro.bajarCantCopias();
+                System.out.println("Préstamo concedido a " + usuario.getNombre() + " para el libro " + libro.getTitulo() + ".");
             } else {
                 pendientes.acolar(prestamo); // O(1)
+                System.out.println("Libro no disponible. Solicitud de " + usuario.getNombre() + " agregada a la cola de espera.");
             }
         } else {
             System.out.println("No puede solicitarse el prestamo porque '" + usuario.getNombre() + "' no está registrado \n");
@@ -101,30 +114,39 @@ public class Sistema {
     }
 
     /**
-     * elimina el prestamo de la lista de prestamos activos,
+     * Elimina el prestamo de la lista de prestamos activos,
      * luego agrega a la lista de prestamos al primer prestamo de la cola de pendientes
      */
     public void realizarDevolucion(Prestamo prestamo) { // O(n)
         if (prestamo != null) { // si el prestamo existe
             prestamosActivos.eliminar(prestamo); // O(n)
-            if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia O(1)
-                prestamosActivos.agregarF(pendientes.primero()); // O(1)
-                prestamosTotales.agregarF(pendientes.primero());
-                pendientes.desacolar(); // O(1)
-            }
             prestamo.getLibro().subirCantCopias();
-            System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto el libro: " + prestamo.getLibro().getTitulo() + "\n");
+            
+            if (!pendientes.colaVacia()) { // si la cola de pendientes no esta vacia O(1)
+                Prestamo nuevoPrestamo = pendientes.primero();
+                pendientes.desacolar(); // O(1)
+                
+                // Se registra el nuevo préstamo activo (del usuario en espera)
+                prestamosActivos.agregarF(nuevoPrestamo); // O(1)
+                prestamosTotales.agregarF(nuevoPrestamo);
+                nuevoPrestamo.getLibro().bajarCantCopias();
+                
+                System.out.println("Devolucion de " + prestamo.getUsuario().getNombre() + " realizada. ");
+                System.out.println("Préstamo inmediato concedido a " + nuevoPrestamo.getUsuario().getNombre() + " (de la cola de espera). \n");
+            } else {
+                 System.out.println("Devolucion: " + prestamo.getUsuario().getNombre() + " ha devuelto el libro: " + prestamo.getLibro().getTitulo() + "\n");
+            }
         } else {
             System.out.println("No puede realizarse la devolucion porque no existe ese prestamo\n");
         }
     }
 
     /**
-     * buscar libro en base a su isbn
+     * Busca libro en base a su isbn
      * @param isbn ISBN a buscar
      */
-    public void buscarLibro(int isbn) { // O(n)
-        if (libros.pertenece(isbn)) { // O(n)
+    public void buscarLibro(int isbn) { // O(log n) - Asumiendo que buscarLibroRecursivo es log(n) en un ABB
+        if (libros.pertenece(isbn)) { // O(n) o similar
             Libro encontrado = buscarLibroRecursivo(arbolLibros, isbn);
             System.out.println("Libro encontrado: " + encontrado.getTitulo() + ", ISBN: " + encontrado.getIsbn());
         } else {
@@ -140,31 +162,49 @@ public class Sistema {
      } else
          return buscarLibroRecursivo(a.hijoDer(), isbn);
     }
-
-    // LISTAR LIBROS, USUARIOS, COLA DE ESPERA Y PRESTAMOS
-    public void listarDevolucionesPendientes() {
-        System.out.println("--- DEVOLUCIONES PENDIENTES ---");
-        prestamosActivos.mostrar();
-        System.out.println();
-    }
-
-    public void listarLibros() {
-        System.out.println("--- LIBROS ---");
-
-
-        ConjuntoLibrosTDA aux = copiarConjuntoLibros();
-
-        while (!aux.conjuntoVacio()) {
-            Libro libroAzar = aux.elegir(); // se elige un libro al azar
-            System.out.println("Titulo: " + libroAzar.getTitulo() + ", Autor: " + libroAzar.getAutor() + ", ISBN: " + libroAzar.getIsbn() + ", Copias: " + libroAzar.getCopiasDisponibles());
-            aux.sacar(libroAzar.getIsbn());
+    
+    /**
+     * Busca un usuario por su DNI (Acceso rápido por clave en el Diccionario).
+     */
+    public Usuario buscarUsuarioPorDni(int dni) {
+        Usuario usuario = usuarios.recuperar(dni);
+        if (usuario != null) {
+            System.out.println("Usuario encontrado por DNI: " + usuario.getNombre() + " " + usuario.getApellido());
+        } else {
+            System.out.println("Usuario NO encontrado con DNI: " + dni);
         }
-        System.out.println();
+        return usuario;
+    }
+    
+    /**
+     * Busca un usuario por su Apellido (Búsqueda O(log n) en el Árbol AVL).
+     */
+    public Usuario buscarUsuarioPorApellido(String apellido) {
+        // Asumo que el método en ArbolUsuariosAVL se llama 'buscar' y retorna un Nodo
+        Nodo nodoEncontrado = indiceUsuarios.buscar(apellido);
+        
+        if (nodoEncontrado != null) {
+            Usuario usuario = nodoEncontrado.usuario;
+            System.out.println("Usuario encontrado por Apellido: " + usuario.getNombre() + " " + usuario.getApellido());
+            return usuario;
+        } else {
+            System.out.println("Usuario NO encontrado con apellido: " + apellido);
+            return null;
+        }
     }
 
+    // LISTAR ESTRUCTURAS
+    
+    public void listarUsuariosOrdenados() {
+        System.out.println("--- USUARIOS ORDENADOS POR APELLIDO (Usando AVL) ---");
+        indiceUsuarios.recorridoInorden(); // Llamo al método recorridoInorden de la clase AVL
+        System.out.println();
+    }
+    
+    // El método listarUsuarios() original ya no lista ordenado
     public void listarUsuarios() {
-        System.out.println("--- USUARIOS ---");
-        ConjuntoUsuariosTDA dnisAux = usuarios.claves();
+        System.out.println("--- USUARIOS (Sin Orden Específico) ---");
+        ConjuntoUsuariosTDA dnisAux = usuarios.claves(); // Obtiene el conjunto de DNI's del diccionario
 
         while (!dnisAux.conjuntoVacio()) {
 
@@ -178,6 +218,25 @@ public class Sistema {
                     ", Telefono: " + usuarioAzar.getTelefono());
 
             dnisAux.sacar(dniAzar);
+        }
+        System.out.println();
+    }
+
+    public void listarDevolucionesPendientes() {
+        System.out.println("--- DEVOLUCIONES PENDIENTES ---");
+        prestamosActivos.mostrar();
+        System.out.println();
+    }
+
+    public void listarLibros() {
+        System.out.println("--- LIBROS ---");
+        // Se mantiene la lógica original de copiar el conjunto para listar sin modificar el original.
+        ConjuntoLibrosTDA aux = copiarConjuntoLibros(); 
+
+        while (!aux.conjuntoVacio()) {
+            Libro libroAzar = aux.elegir(); // se elige un libro al azar
+            System.out.println("Titulo: " + libroAzar.getTitulo() + ", Autor: " + libroAzar.getAutor() + ", ISBN: " + libroAzar.getIsbn() + ", Copias: " + libroAzar.getCopiasDisponibles());
+            aux.sacar(libroAzar.getIsbn());
         }
         System.out.println();
     }
@@ -263,8 +322,4 @@ public class Sistema {
         }
         return copia;
     } // O(n)
-
-    public void listarUsuariosOrdenados() {
-        indiceUsuarios.listarUsuariosOrdenados();
-    }
 }
