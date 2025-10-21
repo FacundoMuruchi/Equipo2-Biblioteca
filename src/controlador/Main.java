@@ -19,6 +19,7 @@ public class Main {
         Usuario facu = sys.registrarUsuario(47307150, "facu", "muruchi", "bera", 1125037150);
         Usuario juan = sys.registrarUsuario(52307157, "juan", "gonzales", "quilmes", 1199037540);
         Usuario fede = sys.registrarUsuario(49872632, "fede", "mestre", "ranelagh", 1169373462);
+        Usuario jaime = sys.registrarUsuario(1230853, "jaime", "altozano", "city bell", 1163426423);
         Usuario carlos = sys.registrarUsuario(49872632, "carlitos", "tevez", "caba", 634735475); // no se añade porque ya existe dni
 
         // LISTAR LIBROS Y USUARIOS REGISTRADOS
@@ -49,5 +50,10 @@ public class Main {
         sys.buscarLibro(600);
         sys.buscarLibro(111);
 
+        // LISTAR USUARIOS ORDENADOS
+        sys.listarUsuariosOrdenados();
+
+        // BUSCAR USUARIO POR DNI
+        sys.buscarUsuario(49872632);
     }
 }

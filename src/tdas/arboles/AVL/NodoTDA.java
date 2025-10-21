@@ -1,9 +1,11 @@
 package tdas.arboles.AVL;
 
+import entidades.Usuario;
+
 public interface NodoTDA {
 	
-    int getDato();
-    void setDato(int dato);
+    Usuario getDato();
+    void setDato(Usuario dato);
     NodoTDA getIzquierdo();
     void setIzquierdo(NodoTDA izquierdo);
     NodoTDA getDerecho();

@@ -1,10 +1,10 @@
 package tdas.arboles.AVL;
 
+import entidades.Usuario;
+
 public interface ArbolAVLTDA {
-	
-    void insertar(int dato);
-    NodoTDA buscar(int dato);
-    void recorridoInorden();
-    void recorridoPreorden();
-    void recorridoPostorden();
+    void inicializarArbol();
+    void insertar(Usuario dato);
+    Usuario buscar(int dato);
+    NodoTDA raiz();
 }

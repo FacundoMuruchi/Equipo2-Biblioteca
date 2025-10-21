@@ -1,25 +1,27 @@
 package tdas.arboles.AVL;
 
+import entidades.Usuario;
+
 public class Nodo implements NodoTDA {
 	
-    private int dato;
+    private Usuario dato;
     private NodoTDA izquierdo;
     private NodoTDA derecho;
     private int altura;
 
-    public Nodo(int dato) {
+    public Nodo(Usuario dato) {
         this.dato = dato;
         this.izquierdo = null;
         this.derecho = null;
-        this.altura = 1; // La altura de un nodo hoja es 1
+        this.altura = 0;
     }
 
     // Getters y setters
-    public int getDato() {
+    public Usuario getDato() {
         return dato;
     }
 
-    public void setDato(int dato) {
+    public void setDato(Usuario dato) {
         this.dato = dato;
     }
 

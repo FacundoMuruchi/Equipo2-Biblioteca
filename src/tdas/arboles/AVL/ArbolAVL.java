@@ -1,27 +1,30 @@
 package tdas.arboles.AVL;
 
+import entidades.Usuario;
+
 public class ArbolAVL implements ArbolAVLTDA {
 	
     private NodoTDA raiz;
 
-    public ArbolAVL() {
-        this.raiz = null;
+    @Override
+    public void inicializarArbol() {
+        raiz = null;
     }
 
     @Override
-    public void insertar(int dato) {
+    public void insertar(Usuario dato) {
         raiz = insertarRecursivo(raiz, dato);
     }
 
-    private NodoTDA insertarRecursivo(NodoTDA nodo, int dato) {
+    private NodoTDA insertarRecursivo(NodoTDA nodo, Usuario dato) {
         // Paso 1: Realizar la inserción normal (como en un árbol binario de búsqueda)
         if (nodo == null) {
             return new Nodo(dato);
         }
 
-        if (dato < nodo.getDato()) {
+        if (dato.getDni() < nodo.getDato().getDni()) {
             nodo.setIzquierdo(insertarRecursivo(nodo.getIzquierdo(), dato));
-        } else if (dato > nodo.getDato()) {
+        } else if (dato.getDni() > nodo.getDato().getDni()) {
             nodo.setDerecho(insertarRecursivo(nodo.getDerecho(), dato));
         } else {
             return nodo; // No se permiten duplicados
@@ -35,23 +38,23 @@ public class ArbolAVL implements ArbolAVLTDA {
 
         // Paso 4: Balancear el árbol si es necesario (4 casos)
         // Rotación izquierda
-        if (balance > 1 && dato < ((Nodo) nodo.getIzquierdo()).getDato()) {
+        if (balance > 1 && dato.getDni() < ((Nodo) nodo.getIzquierdo()).getDato().getDni()) {
             return rotacionDerecha(nodo);
         }
 
         // Rotación derecha
-        if (balance < -1 && dato > ((Nodo) nodo.getDerecho()).getDato()) {
+        if (balance < -1 && dato.getDni() > ((Nodo) nodo.getDerecho()).getDato().getDni()) {
             return rotacionIzquierda(nodo);
         }
 
         // Rotación doble izquierda-derecha
-        if (balance > 1 && dato > ((Nodo) nodo.getIzquierdo()).getDerecho().getDato()) {
+        if (balance > 1 && dato.getDni() > ((Nodo) nodo.getIzquierdo()).getDerecho().getDato().getDni()) {
             nodo.setIzquierdo(rotacionIzquierda(nodo.getIzquierdo()));
             return rotacionDerecha(nodo);
         }
 
         // Rotación doble derecha-izquierda
-        if (balance < -1 && dato < ((Nodo) nodo.getDerecho()).getIzquierdo().getDato()) {
+        if (balance < -1 && dato.getDni() < ((Nodo) nodo.getDerecho()).getIzquierdo().getDato().getDni()) {
             nodo.setDerecho(rotacionDerecha(nodo.getDerecho()));
             return rotacionIzquierda(nodo);
         }
@@ -104,15 +107,15 @@ public class ArbolAVL implements ArbolAVLTDA {
     }
 
     @Override
-    public NodoTDA buscar(int dato) {
+    public Usuario buscar(int dato) {
         return buscarRecursivo(raiz, dato);
     }
 
-    private NodoTDA buscarRecursivo(NodoTDA nodo, int dato) {
-        if (nodo == null || nodo.getDato() == dato) {
-            return nodo;
+    private Usuario buscarRecursivo(NodoTDA nodo, int dato) {
+        if (nodo == null || nodo.getDato().getDni() == dato) {
+            return nodo.getDato();
         }
-        if (dato < nodo.getDato()) {
+        if (dato < nodo.getDato().getDni()) {
             return buscarRecursivo(nodo.getIzquierdo(), dato);
         } else {
             return buscarRecursivo(nodo.getDerecho(), dato);
@@ -120,41 +123,7 @@ public class ArbolAVL implements ArbolAVLTDA {
     }
 
     @Override
-    public void recorridoInorden() {
-        recorridoInordenRecursivo(raiz);
-    }
-
-    private void recorridoInordenRecursivo(NodoTDA nodo) {
-        if (nodo != null) {
-            recorridoInordenRecursivo(nodo.getIzquierdo());
-            System.out.print(nodo.getDato() + " ");
-            recorridoInordenRecursivo(nodo.getDerecho());
-        }
-    }
-
-    @Override
-    public void recorridoPreorden() {
-        recorridoPreordenRecursivo(raiz);
-    }
-
-    private void recorridoPreordenRecursivo(NodoTDA nodo) {
-        if (nodo != null) {
-            System.out.print(nodo.getDato() + " ");
-            recorridoPreordenRecursivo(nodo.getIzquierdo());
-            recorridoPreordenRecursivo(nodo.getDerecho());
-        }
-    }
-
-    @Override
-    public void recorridoPostorden() {
-        recorridoPostordenRecursivo(raiz);
-    }
-
-    private void recorridoPostordenRecursivo(NodoTDA nodo) {
-        if (nodo != null) {
-            recorridoPostordenRecursivo(nodo.getIzquierdo());
-            recorridoPostordenRecursivo(nodo.getDerecho());
-            System.out.print(nodo.getDato() + " ");
-        }
+    public NodoTDA raiz() {
+        return raiz;
     }
 }
