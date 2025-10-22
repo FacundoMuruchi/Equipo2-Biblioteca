@@ -4,9 +4,9 @@ import entidades.Libro;
 import entidades.Prestamo;
 import entidades.Usuario;
 import tdas.arboles.ABB;
-import tdas.arboles.AVL.ArbolAVL;
-import tdas.arboles.AVL.ArbolAVLTDA;
-import tdas.arboles.AVL.NodoTDA;
+import tdas.arboles.ArbolAVL;
+import tdas.arboles.ArbolAVLTDA;
+import tdas.arboles.NodoAVL;
 import tdas.arboles.ArbolBinarioTDA;
 import tdas.colas.ColaListaDeEsperaDinamica;
 import tdas.colas.ColaListaDeEsperaTDA;
@@ -230,11 +230,11 @@ public class Sistema {
         }
     }
 
-    private void recorridoInordenRecursivo(NodoTDA nodo) {
+    private void recorridoInordenRecursivo(NodoAVL nodo) {
         if (nodo != null) {
-            recorridoInordenRecursivo(nodo.getIzquierdo());
-            System.out.println("Usuario: " + nodo.getDato().getNombre() + " " + nodo.getDato().getApellido() + ", DNI: " + nodo.getDato().getDni());
-            recorridoInordenRecursivo(nodo.getDerecho());
+            recorridoInordenRecursivo(nodo.subIzq);
+            System.out.println("Usuario: " + nodo.dato.getNombre() + " " + nodo.dato.getApellido() + ", DNI: " + nodo.dato.getDni());
+            recorridoInordenRecursivo(nodo.subDer);
         }
     }
 
