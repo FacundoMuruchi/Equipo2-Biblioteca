@@ -4,6 +4,9 @@ import entidades.Libro;
 import entidades.Prestamo;
 import entidades.Usuario;
 import tdas.arboles.ABB;
+import tdas.arboles.ArbolAVL;
+import tdas.arboles.ArbolAVLTDA;
+import tdas.arboles.NodoAVL;
 import tdas.arboles.ArbolBinarioTDA;
 import tdas.colas.ColaListaDeEsperaDinamica;
 import tdas.colas.ColaListaDeEsperaTDA;
@@ -21,6 +24,7 @@ public class Sistema {
     DiccionarioSimpleUsuariosTDA usuarios;
     ListaPrestamoTDA prestamosActivos, prestamosTotales;
     ColaListaDeEsperaTDA pendientes;
+    ArbolAVLTDA dnis;
 
     /**
      * constructor: inicializa estructuras
@@ -43,6 +47,9 @@ public class Sistema {
 
         pendientes = new ColaListaDeEsperaDinamica();
         pendientes.inicializarCola();
+
+        dnis = new ArbolAVL();
+        dnis.inicializarArbol();
     }
 
     // METODOS DE LA BIBLIOTECA
@@ -68,6 +75,7 @@ public class Sistema {
             System.out.println("No se puede añadir al usuario '" + nombre + "' porque ya hay uno registrado con DNI: " + dni + "\n");
         } else {
             usuarios.agregar(dni, usuario);
+            dnis.insertar(usuario);
         }
         return usuario;
     }
@@ -134,6 +142,14 @@ public class Sistema {
          return buscarLibroRecursivo(a.hijoDer(), isbn);
     }
 
+    public void buscarUsuario(int dni) {
+        if (usuarios.claves().pertenece(dni)) {
+            Usuario encontrado = dnis.buscar(dni);
+            System.out.println("Usuario encontrado: " + encontrado.getNombre() + " " + encontrado.getApellido() + " con DNI: " + dni);
+        } else
+            System.out.println("Usuario NO encontrado con DNI: " + dni);
+    }
+
     // LISTAR LIBROS, USUARIOS, COLA DE ESPERA Y PRESTAMOS
     public void listarDevolucionesPendientes() {
         System.out.println("--- DEVOLUCIONES PENDIENTES ---");
@@ -165,13 +181,19 @@ public class Sistema {
             Usuario usuarioAzar = usuarios.recuperar(dniAzar); // elegir usuario de la respectiva clave
 
             System.out.println("DNI: " + dniAzar +
-                    ", Nombre: " + usuarioAzar.getNombre() +
-                    ", Apellido: " + usuarioAzar.getApellido() +
+                    ", Usuario: " + usuarioAzar.getNombre() +
+                    " " + usuarioAzar.getApellido() +
                     ", Direccion: " + usuarioAzar.getDireccion() +
                     ", Telefono: " + usuarioAzar.getTelefono());
 
             dnisAux.sacar(dniAzar);
         }
+        System.out.println();
+    }
+
+    public void listarUsuariosOrdenados() {
+        System.out.println("--- USUARIOS ORDENADOS ---");
+        recorridoInordenRecursivo(dnis.raiz());
         System.out.println();
     }
 
@@ -205,6 +227,14 @@ public class Sistema {
             inOrder(a.hijoIzq());
             System.out.println("Titulo: " + a.raiz().getTitulo() + ", ISBN: " + a.raiz().getIsbn());
             inOrder(a.hijoDer());
+        }
+    }
+
+    private void recorridoInordenRecursivo(NodoAVL nodo) {
+        if (nodo != null) {
+            recorridoInordenRecursivo(nodo.subIzq);
+            System.out.println("Usuario: " + nodo.dato.getNombre() + " " + nodo.dato.getApellido() + ", DNI: " + nodo.dato.getDni());
+            recorridoInordenRecursivo(nodo.subDer);
         }
     }
 
