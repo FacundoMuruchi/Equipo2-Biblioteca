@@ -1,13 +1,12 @@
 package tdas.arboles;
 
 import entidades.Libro;
-import tdas.arboles.ArbolBinarioTDA;
 
-public class ABB implements ArbolBinarioTDA{
+public class ABBLibros implements ABBLibrosTDA {
     private class Nodo {
         Libro dato;
-        ArbolBinarioTDA subIzq;
-        ArbolBinarioTDA subDer;
+        ABBLibrosTDA subIzq;
+        ABBLibrosTDA subDer;
     }
 
     Nodo raiz;
@@ -23,12 +22,12 @@ public class ABB implements ArbolBinarioTDA{
     }
 
     @Override
-    public ArbolBinarioTDA hijoIzq() {
+    public ABBLibrosTDA hijoIzq() {
         return raiz.subIzq;
     }
 
     @Override
-    public ArbolBinarioTDA hijoDer() {
+    public ABBLibrosTDA hijoDer() {
         return raiz.subDer;
     }
 
@@ -42,9 +41,9 @@ public class ABB implements ArbolBinarioTDA{
         if (raiz == null) { // caso base
             raiz = new Nodo();
             raiz.dato = x;
-            raiz.subIzq = new ABB();
+            raiz.subIzq = new ABBLibros();
             raiz.subIzq.inicializarArbol();
-            raiz.subDer = new ABB();
+            raiz.subDer = new ABBLibros();
             raiz.subDer.inicializarArbol();
 
             // casos recursivos
@@ -55,14 +54,14 @@ public class ABB implements ArbolBinarioTDA{
         }
     }
 
-    private Libro mayor (ArbolBinarioTDA a) {
+    private Libro mayor (ABBLibrosTDA a) {
         if (a.hijoDer().arbolVacio())
             return a.raiz();
         else
             return mayor(a.hijoDer());
     }
 
-    private Libro menor (ArbolBinarioTDA a) {
+    private Libro menor (ABBLibrosTDA a) {
         if (a.hijoIzq().arbolVacio())
             return a.raiz();
         else

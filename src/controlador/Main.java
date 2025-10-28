@@ -46,19 +46,23 @@ public class Main {
         sys.mostrarLibrosOrdenados();
 
         // BUSCAR LIBRO POR ISBN
+        System.out.println("--- BUSQUEDA DE LIBRO ---");
         sys.buscarLibro(11191);
         sys.buscarLibro(30);
         sys.buscarLibro(600);
         sys.buscarLibro(111);
+        sys.buscarLibro(123);
         System.out.println();
 
         // LISTAR USUARIOS ORDENADOS
         sys.listarUsuariosOrdenados();
 
         // BUSCAR USUARIO POR DNI
+        System.out.println("--- BUSQUEDA DE USUARIO ---");
         sys.buscarUsuario(49872632);
         sys.buscarUsuario(47679632);
         sys.buscarUsuario(45812331);
         sys.buscarUsuario(47862369);
+        sys.buscarUsuario(23523478);
     }
 }

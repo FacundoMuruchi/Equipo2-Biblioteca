@@ -2,7 +2,7 @@ package tdas.arboles;
 
 import entidades.Usuario;
 
-public class ArbolAVL implements ArbolAVLTDA {
+public class AVLUsuarios implements AVLUsuariosTDA {
 	
     private NodoAVL raiz;
 

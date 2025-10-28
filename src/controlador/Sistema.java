@@ -3,11 +3,11 @@ package controlador;
 import entidades.Libro;
 import entidades.Prestamo;
 import entidades.Usuario;
-import tdas.arboles.ABB;
-import tdas.arboles.ArbolAVL;
-import tdas.arboles.ArbolAVLTDA;
+import tdas.arboles.ABBLibros;
+import tdas.arboles.AVLUsuarios;
+import tdas.arboles.AVLUsuariosTDA;
 import tdas.arboles.NodoAVL;
-import tdas.arboles.ArbolBinarioTDA;
+import tdas.arboles.ABBLibrosTDA;
 import tdas.colas.ColaListaDeEsperaDinamica;
 import tdas.colas.ColaListaDeEsperaTDA;
 import tdas.conjuntos.ConjuntoLibrosLD;
@@ -20,11 +20,11 @@ import tdas.listas.ListaPrestamoTDA;
 
 public class Sistema {
     ConjuntoLibrosTDA libros;
-    ArbolBinarioTDA arbolLibros;
+    ABBLibrosTDA arbolLibros;
     DiccionarioSimpleUsuariosTDA usuarios;
     ListaPrestamoTDA prestamosActivos, prestamosTotales;
     ColaListaDeEsperaTDA pendientes;
-    ArbolAVLTDA dnis;
+    AVLUsuariosTDA dnis;
 
     /**
      * constructor: inicializa estructuras
@@ -33,7 +33,7 @@ public class Sistema {
         libros = new ConjuntoLibrosLD();
         libros.inicializarConjunto();
 
-        arbolLibros = new ABB();
+        arbolLibros = new ABBLibros();
         arbolLibros.inicializarArbol();
 
         usuarios = new DiccionarioSimpleUsuariosEstatico();
@@ -48,7 +48,7 @@ public class Sistema {
         pendientes = new ColaListaDeEsperaDinamica();
         pendientes.inicializarCola();
 
-        dnis = new ArbolAVL();
+        dnis = new AVLUsuarios();
         dnis.inicializarArbol();
     }
 
@@ -133,7 +133,7 @@ public class Sistema {
         }
     }
 
-    private Libro buscarLibroRecursivo(ArbolBinarioTDA a, int isbn) {
+    private Libro buscarLibroRecursivo(ABBLibrosTDA a, int isbn) {
      if (a.raiz().getIsbn() == isbn)
          return a.raiz();
      else if (a.raiz().getIsbn() > isbn) {
@@ -222,7 +222,7 @@ public class Sistema {
         System.out.println();
     }
 
-    private void inOrder(ArbolBinarioTDA a) {
+    private void inOrder(ABBLibrosTDA a) {
         if (!a.arbolVacio()) {
             inOrder(a.hijoIzq());
             System.out.println("Titulo: " + a.raiz().getTitulo() + ", ISBN: " + a.raiz().getIsbn());
