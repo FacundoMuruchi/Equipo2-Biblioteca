@@ -5,73 +5,64 @@ import entidades.Prestamo;
 import entidades.Usuario;
 
 public class Main {
-    
     public static void main(String[] args) {
-        Sistema biblioteca = new Sistema();
-        
-        System.out.println("--- INICIANDO PRUEBAS DEL SISTEMA ---\n");
-        
-        // 1. REGISTRO DE LIBROS
-        System.out.println("1. REGISTRO DE LIBROS:");
-        Libro l1 = biblioteca.agregarLibro("Cien años de soledad", "García Márquez", 9786, 2);
-        Libro l2 = biblioteca.agregarLibro("El señor de los anillos", "Tolkien", 1234, 1);
-        Libro l3 = biblioteca.agregarLibro("Rayuela", "Cortázar", 5678, 3);
-        System.out.println();
-        
-        // 2. REGISTRO DE USUARIOS (Diccionario por DNI + AVL por Apellido)
-        // Se insertan usuarios con apellidos desordenados para verificar el AVL.
-        System.out.println("2. REGISTRO DE USUARIOS:");
-        Usuario u1 = biblioteca.registrarUsuario(111, "Ana", "Zalazar", "Calle A", 1111);
-        Usuario u2 = biblioteca.registrarUsuario(222, "Carlos", "Perez", "Calle B", 2222);
-        Usuario u3 = biblioteca.registrarUsuario(333, "Beto", "Martinez", "Calle C", 3333);
-        Usuario u4 = biblioteca.registrarUsuario(444, "Diana", "Alvarez", "Calle D", 4444);
-        
-        // Intento de registrar un usuario con DNI duplicado (debe fallar la inserción en ambas TDAs)
-        biblioteca.registrarUsuario(111, "Error", "Duplicado", "Calle X", 0000);
-        System.out.println();
-        
-        // 3. PRUEBAS DE BÚSQUEDA DE USUARIOS
-        System.out.println("3. PRUEBAS DE BÚSQUEDA:");
-        
-        // Búsqueda en el Diccionario por DNI
-        biblioteca.buscarUsuarioPorDni(333);
-        
-        // Búsqueda en el AVL por Apellido
-        biblioteca.buscarUsuarioPorApellido("Perez");
-        biblioteca.buscarUsuarioPorApellido("Flores"); // No existente
+        Sistema sys = new Sistema();
+
+        // AÑADIR LIBROS
+        Libro frankenstein = sys.agregarLibro("Frankenstein", "Mary Shelley", 123, 50);
+        Libro principito = sys.agregarLibro("El principito", "Antoine de Saint-Exupéry", 5234, 100);
+        Libro harryPotter = sys.agregarLibro("Harry Potter", "J.K. Rowling", 111, 1);
+        Libro superman = sys.agregarLibro("Superman", "Marvel", 30, 100);
+//        Libro señorAnillos = sys.agregarLibro("El Señor de los Anillos", "J.R.R. Tolkien", 123, 500); // no se añade porque ya existe isbn
+
+        // REGISTRAR USUARIOS
+        Usuario facu = sys.registrarUsuario(47307150, "facu", "muruchi", "bera", 1125037150);
+        Usuario juan = sys.registrarUsuario(52307157, "juan", "gonzales", "quilmes", 1199037540);
+        Usuario fede = sys.registrarUsuario(49872632, "fede", "mestre", "ranelagh", 1169373462);
+        Usuario alma = sys.registrarUsuario(47862369, "alma", "velazco", "solano", 1164576457);
+        Usuario roman = sys.registrarUsuario(45812331, "roman", "bramanti", "ezpeleta", 1106789877);
+        Usuario carlos = sys.registrarUsuario(49872632, "carlitos", "tevez", "caba", 634735475); // no se añade porque ya existe dni
+
+        // LISTAR LIBROS Y USUARIOS REGISTRADOS
+        sys.listarLibros();
+        sys.listarUsuarios();
+
+        // SOLICITAR PRESTAMOS
+        Prestamo pres1 = sys.solicitarPrestamo(harryPotter, juan, "12-12-25");
+        Prestamo pres2 = sys.solicitarPrestamo(frankenstein, fede, "4-12-25");
+        Prestamo pres3 = sys.solicitarPrestamo(principito, facu, "23-12-25");
+        Prestamo pres4 = sys.solicitarPrestamo(harryPotter, facu, "10-12-25");
+        Prestamo pres5 = sys.solicitarPrestamo(harryPotter, fede, "15-12-25");
+//        Prestamo pres6 = sys.solicitarPrestamo(frankenstein, carlos, "10-12-25"); // no se realiza el prestamo porque carlos no esta registrado
+
+//        sys.realizarDevolucion(pres1);
+
+        // LISTAR PRESTAMOS, DEVOLUCIONES PENDIENTES Y COLA DE ESPERA
+        sys.listarTodosPrestamos();
+        sys.listarDevolucionesPendientes();
+        sys.mostrarColaDeEspera();
+
+        // LISTAR LIBROS ORDENADOS
+        sys.mostrarLibrosOrdenados();
+
+        // BUSCAR LIBRO POR ISBN
+        System.out.println("--- BUSQUEDA DE LIBRO ---");
+        sys.buscarLibro(11191);
+        sys.buscarLibro(30);
+        sys.buscarLibro(600);
+        sys.buscarLibro(111);
+        sys.buscarLibro(123);
         System.out.println();
 
-        // 4. PRUEBA DE LISTADO ORDENADO (Usando AVL)
-        // Debe salir en orden alfabético: Alvarez, Martinez, Perez, Zalazar
-        System.out.println("4. LISTADO DE USUARIOS ORDENADO POR APELLIDO:");
-        biblioteca.listarUsuariosOrdenados();
-        
-        // 5. PRUEBA DE PRÉSTAMOS Y COLA DE ESPERA
-        System.out.println("5. PRUEBA DE PRÉSTAMOS:");
-        
-        // Préstamo 1 (Disponible)
-        Prestamo p1 = biblioteca.solicitarPrestamo(l2, u2, "2025-11-01"); 
-        
-        // Préstamo 2 (Disponible)
-        Prestamo p2 = biblioteca.solicitarPrestamo(l1, u1, "2025-11-05");
-        
-        // Préstamo 3 (Disponible, agota l2)
-        Prestamo p3 = biblioteca.solicitarPrestamo(l2, u3, "2025-11-10"); 
-        
-        // Préstamo 4 (A Cola de Espera: l2 no tiene copias)
-        Prestamo p4 = biblioteca.solicitarPrestamo(l2, u4, "2025-11-15"); 
-        System.out.println();
-        
-        // 6. PRUEBA DE DEVOLUCIÓN Y COLA DE ESPERA
-        System.out.println("6. PRUEBA DE DEVOLUCIÓN Y COLA DE ESPERA:");
-        biblioteca.mostrarColaDeEspera();
-        
-        // Devolución de l2 (u3) - Esto libera la copia y se presta a u4
-        biblioteca.realizarDevolucion(p3);
-        
-        biblioteca.mostrarColaDeEspera();
-        biblioteca.listarDevolucionesPendientes();
-        
-        System.out.println("--- PRUEBAS DEL SISTEMA FINALIZADAS ---");
+        // LISTAR USUARIOS ORDENADOS
+        sys.listarUsuariosOrdenados();
+
+        // BUSCAR USUARIO POR DNI
+        System.out.println("--- BUSQUEDA DE USUARIO ---");
+        sys.buscarUsuario(49872632);
+        sys.buscarUsuario(47679632);
+        sys.buscarUsuario(45812331);
+        sys.buscarUsuario(47862369);
+        sys.buscarUsuario(23523478);
     }
 }
