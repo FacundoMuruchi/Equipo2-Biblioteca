@@ -65,7 +65,7 @@ public class ABBLibros implements ABBLibrosTDA {
         if (a.hijoIzq().arbolVacio())
             return a.raiz();
         else
-            return mayor(a.hijoIzq());
+            return menor(a.hijoIzq());
     }
 
     @Override
