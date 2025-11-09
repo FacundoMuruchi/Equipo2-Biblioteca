@@ -16,12 +16,14 @@ public class Main {
 //        Libro señorAnillos = sys.agregarLibro("El Señor de los Anillos", "J.R.R. Tolkien", 123, 500); // no se añade porque ya existe isbn
 
         // REGISTRAR USUARIOS
-        Usuario facu = sys.registrarUsuario(47307150, "facu", "muruchi", "bera", 1125037150);
-        Usuario juan = sys.registrarUsuario(52307157, "juan", "gonzales", "quilmes", 1199037540);
-        Usuario fede = sys.registrarUsuario(49872632, "fede", "mestre", "ranelagh", 1169373462);
-        Usuario alma = sys.registrarUsuario(47862369, "alma", "velazco", "solano", 1164576457);
-        Usuario roman = sys.registrarUsuario(45812331, "roman", "bramanti", "ezpeleta", 1106789877);
-        Usuario carlos = sys.registrarUsuario(49872632, "carlitos", "tevez", "caba", 634735475); // no se añade porque ya existe dni
+        Usuario facu = sys.registrarUsuario(47000000, "facu", "muruchi", "bera", 1125037150);
+        Usuario juan = sys.registrarUsuario(52000000, "juan", "gonzales", "quilmes", 1199037540);
+        Usuario fede = sys.registrarUsuario(49000000, "fede", "mestre", "ranelagh", 1169373462);
+        Usuario alma = sys.registrarUsuario(45000000, "alma", "velazco", "solano", 1164576457);
+        Usuario roman = sys.registrarUsuario(43000000, "roman", "bramanti", "ezpeleta", 1106789877);
+        Usuario julio = sys.registrarUsuario(43500000, "julio", "cairo", "quilmes", 1106379873);
+        Usuario mati = sys.registrarUsuario(43600000, "mati", "suarez", "ezpeleta", 1106785677);
+        Usuario carlos = sys.registrarUsuario(46000000, "carlitos", "tevez", "caba", 634735475); // no se añade porque ya existe dni
 
         // LISTAR LIBROS Y USUARIOS REGISTRADOS
         sys.listarLibros();
@@ -46,23 +48,21 @@ public class Main {
         sys.mostrarLibrosOrdenados();
 
         // BUSCAR LIBRO POR ISBN
-        System.out.println("--- BUSQUEDA DE LIBRO ---");
         sys.buscarLibro(11191);
         sys.buscarLibro(30);
         sys.buscarLibro(600);
         sys.buscarLibro(111);
-        sys.buscarLibro(123);
         System.out.println();
 
         // LISTAR USUARIOS ORDENADOS
         sys.listarUsuariosOrdenados();
 
         // BUSCAR USUARIO POR DNI
-        System.out.println("--- BUSQUEDA DE USUARIO ---");
-        sys.buscarUsuario(49872632);
+        sys.buscarUsuario(49000000);
         sys.buscarUsuario(47679632);
-        sys.buscarUsuario(45812331);
+        sys.buscarUsuario(45000000);
         sys.buscarUsuario(47862369);
-        sys.buscarUsuario(23523478);
+
+        sys.imprimirArbolUsuarios();
     }
 }
