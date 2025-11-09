@@ -81,33 +81,33 @@ public class ArbolAVL implements ArbolAVLTDA {
     }
 
     private NodoAVL rotacionIzquierda(NodoAVL x) {
-        NodoAVL y = x.subDer;
-        NodoAVL T2 = y.subIzq;
+        NodoAVL y = x.subDer;      // y va a subir
+        NodoAVL T2 = y.subIzq;     // T2 va a cambiar de padre
 
-        // Rotar
-        y.subIzq = x;
-        x.subDer = T2;
+        // La rotación física
+        y.subIzq = x;              // x baja a la izquierda de y
+        x.subDer = T2;             // T2 pasa a ser hijo derecho de x
 
         // Actualizar alturas
         actualizarAltura(x);
         actualizarAltura(y);
 
-        return y;
+        return y;  // y es la nueva raíz
     }
 
     private NodoAVL rotacionDerecha(NodoAVL y) {
-        NodoAVL x = y.subIzq;
-        NodoAVL T2 = x.subDer;
+        NodoAVL x = y.subIzq;      // x va a subir
+        NodoAVL T2 = x.subDer;     // T2 va a cambiar de padre
 
-        // Rotar
-        x.subDer = y;
-        y.subIzq = T2;
+        // La rotación física
+        x.subDer = y;              // y baja a la derecha de x
+        y.subIzq = T2;             // T2 pasa a ser hijo izquierdo de y
 
         // Actualizar alturas
         actualizarAltura(y);
         actualizarAltura(x);
 
-        return x;
+        return x;  // x es la nueva raíz de este subárbol
     }
 
     @Override
