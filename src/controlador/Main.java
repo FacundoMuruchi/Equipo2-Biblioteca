@@ -63,6 +63,8 @@ public class Main {
         sys.buscarUsuario(45000000);
         sys.buscarUsuario(47862369);
 
+        // IMPRIMIR ARBOLES
         sys.imprimirArbolUsuarios();
+        sys.imprimirArbolLibros();
     }
 }

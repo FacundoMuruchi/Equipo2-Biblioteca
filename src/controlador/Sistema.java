@@ -120,6 +120,14 @@ public class Sistema {
         }
     }
 
+
+
+
+
+
+
+
+    // BUSCAR
     /**
      * buscar libro en base a su isbn
      * @param isbn ISBN a buscar
@@ -149,6 +157,15 @@ public class Sistema {
         } else
             System.out.println("Usuario NO encontrado con DNI: " + dni);
     }
+
+
+
+
+
+
+
+
+
 
     // LISTAR LIBROS, USUARIOS, COLA DE ESPERA Y PRESTAMOS
     public void listarDevolucionesPendientes() {
@@ -257,6 +274,33 @@ public class Sistema {
         System.out.println("\n--- ARBOL DE USUARIOS ORDENADO POR DNI ---");
         inOrderInversoAVL(dnis.raiz(), 0);
     }
+
+    private void inOrderInversoABB(ABBLibrosTDA a, int nivel) {
+        if (!a.arbolVacio()) {
+            // subárbol derecho
+            inOrderInversoABB(a.hijoDer(), nivel + 1);
+
+            // cantidad de tabulaciones por nivel
+            System.out.print("\t".repeat(nivel));
+
+            System.out.println(a.raiz().getIsbn());
+
+            // subárbol izquierdo
+            inOrderInversoABB(a.hijoIzq(), nivel + 1);
+        }
+    }
+
+    public void imprimirArbolLibros() {
+        System.out.println("\n--- ARBOL DE LIBROS ORDENADO POR ISBN ---");
+        inOrderInversoABB(arbolLibros, 0);
+    }
+
+
+
+
+
+
+
 
 
     // COPIAR ESTRUCTURAS
