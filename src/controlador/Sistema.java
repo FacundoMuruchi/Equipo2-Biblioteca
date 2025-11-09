@@ -238,6 +238,27 @@ public class Sistema {
         }
     }
 
+    private void inOrderInversoAVL(NodoAVL nodo, int nivel) {
+        if (nodo != null) {
+            // subárbol derecho
+            inOrderInversoAVL(nodo.subDer, nivel + 2);
+
+            // cantidad de tabulaciones por nivel
+            System.out.print("\t".repeat(nivel));
+
+            System.out.println(nodo.dato.getDni());
+
+            // subárbol izquierdo
+            inOrderInversoAVL(nodo.subIzq, nivel + 2);
+        }
+    }
+
+    public void imprimirArbolUsuarios() {
+        System.out.println("\n--- ARBOL DE USUARIOS ORDENADO POR DNI ---");
+        inOrderInversoAVL(dnis.raiz(), 0);
+    }
+
+
     // COPIAR ESTRUCTURAS
     private ConjuntoLibrosTDA copiarConjuntoLibros() { // O(n)
         ConjuntoLibrosTDA aux = new ConjuntoLibrosLD();

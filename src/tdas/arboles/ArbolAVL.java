@@ -82,7 +82,7 @@ public class ArbolAVL implements ArbolAVLTDA {
 
     private NodoAVL rotacionIzquierda(NodoAVL x) {
         NodoAVL y = x.subDer;
-        NodoAVL T2 = y.subDer;
+        NodoAVL T2 = y.subIzq;
 
         // Rotar
         y.subIzq = x;
