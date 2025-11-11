@@ -48,13 +48,13 @@ public class AVLUsuarios implements AVLUsuariosTDA {
         }
 
         // Left-Right
-        if (balance > 1 && dato.getDni() > nodo.subIzq.subDer.dato.getDni()) {
+        if (balance > 1 && dato.getDni() > nodo.subIzq.dato.getDni()) {
             nodo.subIzq = rotacionIzquierda(nodo.subIzq);
             return rotacionDerecha(nodo);
         }
 
         // Right-Left
-        if (balance < -1 && dato.getDni() < nodo.subDer.subIzq.dato.getDni()) {
+        if (balance < -1 && dato.getDni() < nodo.subDer.dato.getDni()) {
             nodo.subDer = rotacionDerecha(nodo.subDer);
             return rotacionIzquierda(nodo);
         }
