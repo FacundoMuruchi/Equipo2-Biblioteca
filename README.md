@@ -80,19 +80,6 @@ Al iniciar el sistema, verás el siguiente menú:
 - Ver préstamos pendientes
 - Consultar cola de espera para libros no disponibles
 
-## 🏗️ Arquitectura y Estructuras de Datos
-
-### Árboles Binarios de Búsqueda (ABB)
-- **Libros**: Ordenados por ISBN para búsquedas eficientes O(log n)
-- **Usuarios**: Ordenados por DNI para búsquedas rápidas con AVL
-
-### Colas
-- **Cola de espera**: Para gestionar solicitudes de libros no disponibles
-
-### Listas
-- **Préstamos activos**: Registro de todos los préstamos realizados
-- **Historial**: Seguimiento completo de operaciones
-
 ## 🔑 Funcionalidades Clave
 
 ### Sistema de Préstamos Inteligente
