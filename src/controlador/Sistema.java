@@ -84,8 +84,8 @@ public class Sistema {
      * generar solicitud de prestamo. si está disponible, se agrega a la lista de prestamos activos y totales,
      * sino se acola en la cola de prestamos pendientes
      */
-    public Prestamo solicitarPrestamo(Libro libro, Usuario usuario, String fechaDevolucion) { // O(n)
-        Prestamo prestamo = new Prestamo(libro, usuario, fechaDevolucion);
+    public Prestamo solicitarPrestamo(Libro libro, Usuario usuario) { // O(n)
+        Prestamo prestamo = new Prestamo(libro, usuario);
         if (usuarios.recuperar(usuario.getDni()) == usuario) { // O(n)
             if (libro.getCopiasDisponibles() > 0) {
                 prestamosActivos.agregarF(prestamo); // O(1)
@@ -132,13 +132,22 @@ public class Sistema {
      * buscar libro en base a su isbn
      * @param isbn ISBN a buscar
      */
-    public void buscarLibro(int isbn) { // O(n)
+    public Libro buscarLibro(int isbn) { // O(n)
         if (libros.pertenece(isbn)) { // O(n)
             Libro encontrado = buscarLibroRecursivo(arbolLibros, isbn);
             System.out.println("Libro encontrado: " + encontrado.getTitulo() + ", ISBN: " + encontrado.getIsbn());
+            return encontrado;
         } else {
             System.out.println("Libro NO encontrado con ISBN: " + isbn);
+            return null;
         }
+    }
+
+    public Prestamo buscarPrestamo(int codigo) {
+        Prestamo prestamoEncontrado = prestamosActivos.buscarPrestamo(codigo);
+        if (prestamoEncontrado == null)
+            System.out.println("Prestamo no encontrado");
+        return prestamoEncontrado;
     }
 
     private Libro buscarLibroRecursivo(ABBLibrosTDA a, int isbn) {
@@ -150,12 +159,15 @@ public class Sistema {
          return buscarLibroRecursivo(a.hijoDer(), isbn);
     }
 
-    public void buscarUsuario(int dni) {
+    public Usuario buscarUsuario(int dni) {
         if (usuarios.claves().pertenece(dni)) {
             Usuario encontrado = dnis.buscar(dni);
             System.out.println("Usuario encontrado: " + encontrado.getNombre() + " " + encontrado.getApellido() + " con DNI: " + dni);
-        } else
+            return encontrado;
+        } else {
             System.out.println("Usuario NO encontrado con DNI: " + dni);
+            return null;
+        }
     }
 
 

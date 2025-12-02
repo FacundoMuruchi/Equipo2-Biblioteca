@@ -6,6 +6,7 @@ public interface ListaPrestamoTDA {
     void inicializarLista();
     void agregarF(Prestamo c);
     void eliminar(Prestamo prestamo);
-    int buscar(Prestamo prestamo);
+    int buscarIndice(Prestamo prestamo);
+    Prestamo buscarPrestamo(int codigo);
     void mostrar();
 }

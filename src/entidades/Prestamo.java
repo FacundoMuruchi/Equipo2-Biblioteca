@@ -1,18 +1,29 @@
 package entidades;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Prestamo {
     private Libro libro;
     private Usuario usuario;
-    private String fechaDevolucion;
+    private LocalDate fechaPrestamo;
+    private LocalDate fechaDevolucion;
+    private int codigo;
+    private static int contadorCodigo = 0;
 
-    public Prestamo(Libro libro, Usuario usuario, String fechaDevolucion) {
+    public Prestamo(Libro libro, Usuario usuario) {
+        this.codigo = ++contadorCodigo;
         this.libro = libro;
         this.usuario = usuario;
-        this.fechaDevolucion = fechaDevolucion;
+        this.fechaPrestamo = LocalDate.now();
+        this.fechaDevolucion = this.fechaPrestamo.plusDays(30);
     }
 
     public Libro getLibro() {
         return libro;
+    }
+
+    public int getCodigo() {
+        return codigo;
     }
 
     public void setLibro(Libro libro) {
@@ -27,13 +38,16 @@ public class Prestamo {
         this.usuario = usuario;
     }
 
-    public String getFechaDevolucion() {
-        return fechaDevolucion;
+    public String getFechaPrestamo() {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return fechaPrestamo.format(formato);
     }
 
-    public void setFechaDevolucion(String fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
+    public String getFechaDevolucion() {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return fechaDevolucion.format(formato);
     }
+
 
     @Override
     public String toString() {

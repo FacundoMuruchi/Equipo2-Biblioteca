@@ -22,7 +22,7 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
 
     @Override
     public void eliminar(Prestamo prestamo) { // O(n)
-        int indx = buscar(prestamo);
+        int indx = buscarIndice(prestamo);
         if (indx != -1) { // si la clave existe
             arr[indx] = arr[indice - 1]; // reemplaza con el ultimo elemento de la lista
             arr[indice - 1] = null;
@@ -31,7 +31,7 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
     }
 
     @Override
-    public int buscar(Prestamo prestamo) { // O(n)
+    public int buscarIndice(Prestamo prestamo) { // O(n)
         int i = indice - 1; // ultimo elemento
         while (i >= 0 && arr[i] != prestamo)
             i--;
@@ -39,10 +39,21 @@ public class ListaPrestamoEstatica implements ListaPrestamoTDA {
     }
 
     @Override
+    public Prestamo buscarPrestamo(int codigo) {
+        int i = indice - 1; // ultimo elemento
+        while (i >= 0 && arr[i].getCodigo() != codigo)
+            i--;
+        if (i == -1)
+            return null;
+        else
+            return arr[i];
+    }
+
+    @Override
     public void mostrar() {
         int i;
         for (i = 0; i < indice; i++) {
-            System.out.println("Usuario: " + arr[i].getUsuario().getNombre() + " " + arr[i].getUsuario().getApellido() + ", Libro: " + arr[i].getLibro().getTitulo() +  ", Devolucion: " + arr[i].getFechaDevolucion());
+            System.out.println("Codigo: " + arr[i].getCodigo() + ", Usuario: " + arr[i].getUsuario().getNombre() + " " + arr[i].getUsuario().getApellido() + ", Libro: " + arr[i].getLibro().getTitulo() + ", Fecha: " + arr[i].getFechaPrestamo() + ", Devolucion: " + arr[i].getFechaDevolucion());
         }
     }
 
