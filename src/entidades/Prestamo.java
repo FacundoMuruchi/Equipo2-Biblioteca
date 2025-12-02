@@ -48,11 +48,14 @@ public class Prestamo {
         return fechaDevolucion.format(formato);
     }
 
+    public int diasRestantes() {
+        return LocalDate.now().until(fechaDevolucion).getDays();
+    }
 
     @Override
     public String toString() {
-        return "Libro = " + libro +
-                ", Usuario = " + usuario +
-                ", Fecha de Devolucion= '" + fechaDevolucion + '\'';
+        return "Codigo: " + codigo + ", Usuario: " + usuario.getNombre() + " " + usuario.getApellido() +
+                ", Libro: " + libro.getTitulo() + ", Fecha: " + this.getFechaPrestamo() + ", Devolucion: "
+                + this.getFechaDevolucion() + ", Dias restantes: " + this.diasRestantes();
     }
 }
