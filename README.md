@@ -1,26 +1,143 @@
-# Trabajo Práctico Obligatorio – Programación 2
-## Escenario: Biblioteca
+# 📚 Sistema de Gestión Bibliotecaria
 
-### Consigna general:
-Cada equipo deberá desarrollar un sistema, en Java, que implemente el escenario asignado. El objetivo es aplicar de forma práctica los conceptos aprendidos en la materia, especialmente el uso de estructuras de datos
+Sistema de gestión para bibliotecas desarrollado en Java, con interfaz de terminal interactiva y estructuras de datos eficientes.
 
-Es mandatorio que al menos una de las estructuras utilizadas tenga implementación
-estática y al menos otra tenga implementación dinámica. Además, se recomienda
-incluir un análisis de costos de la solución, dado que este aspecto podría ser
-evaluado durante la defensa individual
+## 🎯 Características Principales
 
-### Consigna especifica:
+- ✅ **Gestión completa de libros** (agregar, buscar, listar)
+- ✅ **Registro y administración de usuarios**
+- ✅ **Sistema de préstamos** con fechas automáticas (30 días)
+- ✅ **Cola de espera** para libros no disponibles
+- ✅ **Control de devoluciones** 
+- ✅ **Búsqueda eficiente** mediante árboles binarios de búsqueda
+- ✅ **Interfaz de terminal** intuitiva y amigable
+- ✅ **Códigos autoincrementales** para identificar préstamos
 
-Sistema de control de préstamos en una biblioteca Desarrollar un sistema para gestionar préstamos y devoluciones de libros en una biblioteca.
+## 🚀 Tecnologías Utilizadas
 
-### Requisitos:
+- **Java**
+- **Estructuras de datos**: Árboles binarios de búsqueda (ABB), Colas, Listas, Diccionarios y Conjuntos
+- **Java Time API** para manejo de fechas
 
-· Utilizar un **conjunto** para almacenar los libros disponibles. Cada libro debe tener título, autor, ISBN y cantidad de copias disponibles.
+## 📁 Estructura del Proyecto
 
-· Utilizar un **diccionario** para registrar los usuarios. La clave será el número de documento, y el valor contendrá los datos personales y los préstamos activos.
+```
+sistema-biblioteca/
+├── src/
+│   ├── controlador/
+│   │   ├── Sistema.java           # Lógica principal del sistema
+│   │   ├── InterfazTerminal.java  # Interfaz de usuario
+│   │   └── Main.java              # Punto de entrada (testing)
+│   ├── entidades/
+│   │   ├── Libro.java             # Entidad Libro
+│   │   ├── Usuario.java           # Entidad Usuario
+│   │   └── Prestamo.java          # Entidad Préstamo
+│   └── tdas/
+│       ├── arboles/               # TDAs de ABB y AVL
+│       ├── colas/                 # TDAs de Colas dinamicas
+│       ├── conjuntos/             # TDAs de Conjuntos estaticos y dinamicos
+│       ├── diccionarios/          # TDAs de Diccionarios estaticos
+│       └── listas/                # TDAs de Listas Estaticas
+└── README.md
+```
 
-· Utilizar una **cola** para manejar la lista de espera de usuarios por cada libro sin copias disponibles.
+## 💻 Uso del Sistema
 
-· El sistema debe permitir buscar libros, solicitar préstamos, realizar devoluciones y registrar automáticamente los cambios en disponibilidad.
+### Menú Principal
 
-· Permitir generar reportes de préstamos realizados, devoluciones pendientes y usuarios en lista de espera.
+Al iniciar el sistema, verás el siguiente menú:
+
+```
+─────── SISTEMA DE GESTIÓN BIBLIOTECARIA ───────
+
+┌─────────────── MENÚ PRINCIPAL ───────────────┐
+1.  Gestión de Libros                        
+2.  Gestión de Usuarios                      
+3.  Gestión de Préstamos                    
+4.  Consultas y Reportes                     
+5.  Visualizar Estructuras de Datos         
+0.  Salir                                    
+└──────────────────────────────────────────────┘
+```
+
+### Operaciones Principales
+
+#### 📖 Gestión de Libros
+- Agregar nuevos libros al sistema
+- Buscar libros por ISBN
+- Listar todos los libros disponibles
+- Ver libros ordenados por ISBN
+
+#### 👥 Gestión de Usuarios
+- Registrar nuevos usuarios
+- Buscar usuarios por DNI
+- Listar todos los usuarios
+- Ver usuarios ordenados por DNI
+
+#### 📋 Gestión de Préstamos
+- Solicitar préstamos (automáticamente calcula devolución a 30 días)
+- Realizar devoluciones
+- Ver préstamos pendientes
+- Consultar cola de espera para libros no disponibles
+
+## 🏗️ Arquitectura y Estructuras de Datos
+
+### Árboles Binarios de Búsqueda (ABB)
+- **Libros**: Ordenados por ISBN para búsquedas eficientes O(log n)
+- **Usuarios**: Ordenados por DNI para búsquedas rápidas con AVL
+
+### Colas
+- **Cola de espera**: Para gestionar solicitudes de libros no disponibles
+
+### Listas
+- **Préstamos activos**: Registro de todos los préstamos realizados
+- **Historial**: Seguimiento completo de operaciones
+
+## 🔑 Funcionalidades Clave
+
+### Sistema de Préstamos Inteligente
+- ✅ Fecha de devolución automática (30 días desde hoy)
+- ✅ Código único autoincremental para cada préstamo
+- ✅ Verificación de disponibilidad de copias
+- ✅ Cola de espera cuando no hay copias disponibles
+- ✅ Detección de préstamos vencidos
+
+### Búsquedas Eficientes
+- ✅ Búsqueda de libros por ISBN: O(log n)
+- ✅ Búsqueda de usuarios por DNI: O(log n)
+- ✅ Validación de duplicados al agregar
+
+### Reportes y Consultas
+- ✅ Listado de todos los préstamos activos
+- ✅ Devoluciones pendientes
+- ✅ Estado de la cola de espera
+- ✅ Visualización de estructuras de datos (árboles)
+
+## 📝 Entidades del Sistema
+
+### Libro
+- ISBN (identificador único)
+- Título
+- Autor
+- Cantidad de copias disponibles
+
+### Usuario
+- DNI (identificador único)
+- Nombre y apellido
+- Domicilio
+- Teléfono
+
+### Préstamo
+- Código autoincremental único
+- Libro prestado
+- Usuario solicitante
+- Fecha de préstamo (automática)
+- Fecha de devolución (30 días después)
+
+## 🚧 Mejoras Futuras
+
+- [ ] Interfaz gráfica (GUI)
+- [ ] Base de datos para persistencia
+- [ ] Sistema de multas por retraso
+- [ ] Notificaciones por email
+- [ ] Categorización de libros por género

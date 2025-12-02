@@ -15,7 +15,7 @@ public class Main {
     }
 
     public void iniciar() {
-        System.out.println("─────────────── SISTEMA DE GESTIÓN BIBLIOTECARIA ───────────────");
+        System.out.println("─────── SISTEMA DE GESTIÓN BIBLIOTECARIA ───────");
 
         boolean continuar = true;
         while (continuar) {
